@@ -1,11 +1,18 @@
 const config = {
     type: Phaser.AUTO,
-    width: 800,
+    width: 900,
     height: 600,
     scene: {
         preload: preload,
         create: create,
         update: update
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 }, // No gravity for top-down movement
+            debug: false
+        }
     }
 };
 
@@ -14,24 +21,21 @@ const game = new Phaser.Game(config);
 let player;
 
 function preload() {
-    this.load.image('sky', 'https://labs.phaser.io/assets/skies/space3.png');
-    this.load.image('player', 'https://labs.phaser.io/assets/sprites/phaser-dude.png');
+    this.load.image('purse', 'images/purse.png');
+    this.load.image('me', 'images/me.png');
 }
 
 function create() {
-    this.add.image(400, 300, 'sky');
+    this.add.rectangle(400, 300, 900, 600, 0xffffff);
+    const meImage = this.add.image(200, 300, 'me');
+    meImage.setDisplaySize(400, 400);
 
-    // Check if player is loaded
-    console.log('Loading player sprite...');
-    player = this.physics.add.image(400, 300, 'player');
-    player.setCollideWorldBounds(true); // Keep player in bounds
-    
-    // Check if player was created
-    console.log('Hi', player);
+    player = this.physics.add.image(400, 400, 'purse');
+    player.setScale(100 / player.width, 100 / player.height);
+    player.setCollideWorldBounds(true);
 }
 
 function update() {
-    // Player movement
     const cursors = this.input.keyboard.createCursorKeys();
 
     if (cursors.left.isDown) {

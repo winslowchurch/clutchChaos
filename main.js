@@ -1,4 +1,5 @@
-import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player.js'; // Adjust path if needed
+import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player.js';
+import { createMugger, handleMuggerDamage } from './mugger.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -25,6 +26,7 @@ function preload() {
     this.load.image('purseAttack', 'images/purseAttack.png');
     this.load.image('subwayStation', 'images/subwayStation.png');
     this.load.image('projectile', 'images/projectile.png');
+    this.load.image('mugger', 'images/mugger.png');
 }
 
 function create() {
@@ -39,9 +41,19 @@ function create() {
     // Add player
     this.player = createPlayer(this);
     
+    // Add mugger
+    this.mugger = createMugger(this);
+
     // Enable collision with the floor
     this.physics.add.collider(this.player, this.floor);
+    this.physics.add.collider(this.mugger, this.floor);
     
+    // Handle projectile collision with mugger
+    this.projectiles = this.physics.add.group(); // Create a group for projectiles
+    this.physics.add.collider(this.projectiles, this.mugger, (projectile, mugger) => {
+        handleMuggerDamage(projectile, mugger, this, 1);
+    });
+
     // Input keys
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys({
@@ -54,5 +66,5 @@ function create() {
 
 function update(time) {
     handlePlayerMovement(this.player, this.cursors, this.wasd);
-    handlePlayerAttack(this, this.player, this.cursors, this.wasd, time);
+    handlePlayerAttack(this, this.player, this.cursors, this.wasd, time, this.projectiles);
 }

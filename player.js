@@ -25,8 +25,7 @@ export function handlePlayerMovement(player, cursors, wasd) {
     }
 }
 
-export function handlePlayerAttack(scene, player, cursors, wasd, time) {
-    // Attack logic
+export function handlePlayerAttack(scene, player, cursors, wasd, time, projectiles) {
     if ((cursors.space.isDown || wasd.space.isDown) && time > lastAttackTime + attackCooldown) {
         attacking = true;
         lastAttackTime = time;
@@ -39,7 +38,7 @@ export function handlePlayerAttack(scene, player, cursors, wasd, time) {
         });
 
         // Create projectile
-        const projectile = scene.physics.add.image(player.x, player.y, 'projectile');
+        const projectile = projectiles.create(player.x, player.y, 'projectile');
         projectile.setVelocityX(300);
         projectile.setScale(20 / projectile.width, 20 / projectile.height);
         projectile.body.allowGravity = false;

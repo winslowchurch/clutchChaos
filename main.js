@@ -3,7 +3,7 @@ import { createMugger, handleMuggerDamage } from './mugger.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: 900,
+    width: 1000,
     height: 600,
     scene: {
         preload: preload,
@@ -24,20 +24,21 @@ const game = new Phaser.Game(config);
 function preload() {
     this.load.image('purse', 'images/purse.png');
     this.load.image('purseAttack', 'images/purseAttack.png');
-    this.load.image('subwayStation', 'images/subwayStation.png');
+    this.load.image('darkAlley', 'images/darkAlley.png');
     this.load.image('projectile', 'images/projectile.png');
     this.load.image('mugger', 'images/mugger.png');
 }
 
 function create() {
     // Add background
-    const background = this.add.image(450, 300, 'subwayStation');
-    background.setDisplaySize(900, 600);
-    
-    // Add floor
-    this.floor = this.add.rectangle(450, 550, 900, 20, 0x000000);
+    const background = this.add.image(config.width / 2, config.height / 2, 'darkAlley');
+    background.setDisplaySize(config.width, config.height);
+
+    // Create an invisible floor
+    this.floor = this.add.rectangle(config.width / 2, config.height - 15, config.width, 30, 0x000000);
+    this.floor.setAlpha(0);
     this.physics.add.existing(this.floor, true);
-    
+
     // Add player
     this.player = createPlayer(this);
     

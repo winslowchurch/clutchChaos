@@ -4,7 +4,6 @@ let lastAttackTime = 0;
 
 export function createPlayer(scene) {
     const player = scene.physics.add.sprite(400, 400, 'purse');
-    player.setScale(100 / player.width, 100 / player.height);
     player.setCollideWorldBounds(true);
     return player;
 }

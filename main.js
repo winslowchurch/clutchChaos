@@ -4,7 +4,6 @@ import { createGirl } from "./girl.js";
 
 // TO DO
 // Add more items to come out of purse
-// make girl and mugger stand on floor too
 
 const config = {
     type: Phaser.AUTO,
@@ -69,6 +68,7 @@ function create() {
     // Enable collision with the floor
     this.physics.add.collider(this.player, this.floor);
     this.physics.add.collider(this.mugger, this.floor);
+    this.physics.add.collider(this.girl, this.floor);
 
     // Handle projectile collision with mugger
     this.projectiles = this.physics.add.group(); // Create a group for projectiles

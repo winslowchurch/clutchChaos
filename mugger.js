@@ -1,5 +1,5 @@
 export function createMugger(scene) {
-    const mugger = scene.physics.add.sprite(800, 500, 'mugger');
+    const mugger = scene.physics.add.sprite(800, 400, 'mugger');
     mugger.setCollideWorldBounds(true);
 
     mugger.health = 5;

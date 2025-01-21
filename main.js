@@ -1,5 +1,5 @@
 import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player.js';
-import { createMugger, handleMuggerDamage } from './mugger.js';
+import { createMugger, handleMuggerDamage, updateHealthBar } from './mugger.js';
 import { createGirl } from "./girl.js";
 
 const config = {
@@ -58,8 +58,10 @@ function create() {
     // Add player
     this.player = createPlayer(this);
     
-    // Add mugger
+    // Add mugger and health bar
     this.mugger = createMugger(this);
+    this.healthBar = this.add.graphics();
+    updateHealthBar(this, this.mugger);
 
     // Add girl
     this.girl = createGirl(this);

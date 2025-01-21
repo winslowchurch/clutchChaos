@@ -8,24 +8,24 @@ export function createPlayer(scene) {
     return player;
 }
 
-export function handlePlayerMovement(player, cursors, wasd) {
+export function handlePlayerMovement(player, keys) {
     // Horizontal movement
-    if (cursors.left.isDown || wasd.left.isDown) {
+    if (keys.left.isDown || keys.arrowLeft.isDown) {
         player.setVelocityX(-160); // Move left
-    } else if (cursors.right.isDown || wasd.right.isDown) {
+    } else if (keys.right.isDown || keys.arrowRight.isDown) {
         player.setVelocityX(160); // Move right
     } else {
         player.setVelocityX(0); // Stop horizontal movement
     }
 
     // Jumping
-    if ((cursors.up.isDown || wasd.up.isDown) && player.body.touching.down) {
+    if ((keys.up.isDown || keys.arrowUp.isDown) && player.body.touching.down) {
         player.setVelocityY(-300); // Jump only when touching the floor
     }
 }
 
-export function handlePlayerAttack(scene, player, cursors, wasd, time, projectiles) {
-    if ((cursors.space.isDown || wasd.space.isDown) && time > lastAttackTime + attackCooldown) {
+export function handlePlayerAttack(scene, player, keys, time, projectiles) {
+    if ((keys.space.isDown) && time > lastAttackTime + attackCooldown) {
         attacking = true;
         lastAttackTime = time;
 

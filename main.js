@@ -2,6 +2,12 @@ import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player
 import { createMugger, handleMuggerDamage } from './mugger.js';
 import { createGirl } from "./girl.js";
 
+// TO DO
+// Add more items to come out of purse
+// make girl and mugger stand on floor too
+// are the wasd keys necessary..?
+// girl sprites
+
 const config = {
     type: Phaser.AUTO,
     width: 1000,
@@ -70,19 +76,20 @@ function create() {
         handleMuggerDamage(projectile, mugger, this, 1);
     });
     
-    // Input keys
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.wasd = this.input.keyboard.addKeys({
+    this.keys = this.input.keyboard.addKeys({
         up: Phaser.Input.Keyboard.KeyCodes.W,
         left: Phaser.Input.Keyboard.KeyCodes.A,
         right: Phaser.Input.Keyboard.KeyCodes.D,
+        arrowUp: Phaser.Input.Keyboard.KeyCodes.UP,
+        arrowLeft: Phaser.Input.Keyboard.KeyCodes.LEFT,
+        arrowRight: Phaser.Input.Keyboard.KeyCodes.RIGHT,
         space: Phaser.Input.Keyboard.KeyCodes.SPACE
     });
 }
 
 function update(time) {
-    handlePlayerMovement(this.player, this.cursors, this.wasd);
-    handlePlayerAttack(this, this.player, this.cursors, this.wasd, time, this.projectiles);
+    handlePlayerMovement(this.player, this.keys);
+    handlePlayerAttack(this, this.player, this.keys, time, this.projectiles);
 }
 
 function changeBackground() {

@@ -2,9 +2,6 @@ import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player
 import { createMugger, handleMuggerDamage } from './mugger.js';
 import { createGirl } from "./girl.js";
 
-// TO DO
-// Add more items to come out of purse
-
 const config = {
     type: Phaser.AUTO,
     width: 1000,

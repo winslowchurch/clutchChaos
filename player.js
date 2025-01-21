@@ -46,8 +46,19 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
         projectile.setVelocityX(300);
         projectile.body.allowGravity = false;
 
+        // Make the projectile spin
+        projectile.rotationSpeed = 0.1; // Adjust this value for faster/slower rotation
+
+        // Update function to spin the projectile
+        scene.events.on('update', () => {
+            if (projectile.active) {
+                projectile.rotation += projectile.rotationSpeed;  // Update the rotation on each frame
+            }
+        });
+
         // Destroy projectile after it leaves the screen
         scene.time.delayedCall(3000, () => projectile.destroy());
     }
 }
+
 

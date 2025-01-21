@@ -5,8 +5,6 @@ import { createGirl } from "./girl.js";
 // TO DO
 // Add more items to come out of purse
 // make girl and mugger stand on floor too
-// are the wasd keys necessary..?
-// girl sprites
 
 const config = {
     type: Phaser.AUTO,
@@ -36,7 +34,9 @@ function preload() {
     this.load.image('purseAttack', 'images/purseAttack.png');
     this.load.image('projectile', 'images/projectile.png');
     this.load.image('mugger', 'images/mugger.png');
-    this.load.image('girl', 'images/girl.png');
+
+    this.load.image('girl1', 'images/girl1.png'); 
+    this.load.image('girl2', 'images/girl2.png');
 }
 
 function create() {

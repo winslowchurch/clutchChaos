@@ -35,6 +35,7 @@ export function handlePlayerAttack(scene, player, cursors, wasd, time, projectil
             player.setTexture('purse');
             attacking = false;
         });
+        player.setVelocityY(-50);
 
         // Create projectile
         const projectile = projectiles.create(player.x, player.y, 'projectile');

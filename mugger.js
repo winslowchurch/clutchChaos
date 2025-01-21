@@ -8,21 +8,18 @@ export function createMugger(scene) {
 }
 
 export function handleMuggerDamage(projectile, mugger, scene, damage) {
+    if (!mugger || !projectile) return;
     mugger.health -= damage;
 
     if (projectile) {
         projectile.destroy();
     }
 
-    // Check if the mugger is out of health
     if (mugger.health <= 0) {
-        mugger.destroy(); // Remove the mugger from the game
+        mugger.destroy();
         scene.add.text(400, 300, 'Mugger Defeated!', { fontSize: '32px', color: '#FF0000' });
     } else {
-        console.log("toodles")
-        // Add visual feedback for damage taken
-        mugger.setTint(0xff0000); // Flash red briefly
+        mugger.setTint(0xff0000);
         scene.time.delayedCall(200, () => mugger.clearTint());
     }
 }
-

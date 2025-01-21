@@ -47,13 +47,13 @@ function create() {
     // Enable collision with the floor
     this.physics.add.collider(this.player, this.floor);
     this.physics.add.collider(this.mugger, this.floor);
-    
+
     // Handle projectile collision with mugger
     this.projectiles = this.physics.add.group(); // Create a group for projectiles
-    this.physics.add.collider(this.projectiles, this.mugger, (projectile, mugger) => {
+    this.physics.add.collider(this.projectiles, this.mugger, (mugger, projectile) => {
         handleMuggerDamage(projectile, mugger, this, 1);
     });
-
+    
     // Input keys
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys({

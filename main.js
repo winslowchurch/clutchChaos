@@ -31,7 +31,9 @@ function preload() {
 
     this.load.image('purse', 'images/purse.png');
     this.load.image('purseAttack', 'images/purseAttack.png');
-    this.load.image('projectile', 'images/projectile.png');
+    this.load.image('lipstick', 'images/lipstick.png');
+    this.load.image('wallet', 'images/wallet.png');
+    this.load.image('coins', 'images/coins.png');
     this.load.image('mugger', 'images/mugger.png');
 
     this.load.image('girl1', 'images/girl1.png'); 

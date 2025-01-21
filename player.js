@@ -37,13 +37,17 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
         });
         player.setVelocityY(-50);
 
-        // Create projectile
-        const projectile = projectiles.create(player.x, player.y, 'projectile');
+        // Randomly select a projectile type
+        const projectileImages = ['lipstick', 'wallet', 'coins'];
+        const randomProjectile = Phaser.Utils.Array.GetRandom(projectileImages);
+
+        // Create the projectile
+        const projectile = projectiles.create(player.x, player.y, randomProjectile);
         projectile.setVelocityX(300);
-        projectile.setScale(20 / projectile.width, 20 / projectile.height);
         projectile.body.allowGravity = false;
 
         // Destroy projectile after it leaves the screen
         scene.time.delayedCall(3000, () => projectile.destroy());
     }
 }
+

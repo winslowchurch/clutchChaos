@@ -1,5 +1,5 @@
 import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player.js';
-import { createMugger, handleMuggerDamage, updateHealthBar } from './mugger.js';
+import { createMugger, handleMuggerDamage, updateHealthBar, handleMuggerShoot } from './mugger.js';
 import { createGirl } from "./girl.js";
 
 // TO DO
@@ -44,6 +44,7 @@ function preload() {
     this.load.image('wallet', 'images/wallet.png');
     this.load.image('coins', 'images/coins.png');
     this.load.image('mugger', 'images/mugger.png');
+    this.load.image('bullet', 'images/bullet.png');
 
     this.load.image('girl1', 'images/girl1.png'); 
     this.load.image('girl2', 'images/girl2.png');
@@ -103,6 +104,25 @@ function create() {
         fontFamily: 'coolFont',
         fontSize: '60px',
         color: '#A64D79'
+    });
+
+    this.bullets = this.physics.add.group();
+    // Set up timer for the mugger to shoot bullets
+    this.time.addEvent({
+        delay: 4000,
+        callback: () => {
+            if (this.mugger.active) {
+                handleMuggerShoot(this, this.mugger, this.bullets)
+            }
+        },
+        callbackScope: this,
+        loop: true,
+    });
+
+    // Handle collision between bullets and the player
+    this.physics.add.collider(this.bullets, this.player, (player, bullet) => {
+        this.player.setVelocityX(-50);
+        bullet.destroy(); // Destroy bullet on collision with the purse
     });
     
     this.keys = this.input.keyboard.addKeys({

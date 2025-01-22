@@ -50,3 +50,18 @@ export function updateHealthBar(scene, mugger) {
     scene.healthBar.fillStyle(0xA64D79, 1); // pink color
     scene.healthBar.fillRect(barX, barY, healthWidth, 20); // Rectangle for health
 }
+
+export function handleMuggerShoot(scene, mugger, bullets) {
+    const bullet = bullets.create(mugger.x, mugger.y, 'bullet');
+
+    bullet.setVelocityX(-300);
+    bullet.body.allowGravity = false;
+
+    // Destroy bullet when it leaves the screen
+    scene.time.addEvent({
+        delay: 4000,
+        callback: () => {
+            if (bullet.active) bullet.destroy();
+        }
+    });
+}

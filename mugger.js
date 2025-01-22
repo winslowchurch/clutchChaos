@@ -18,6 +18,9 @@ export function createMugger(scene, maxHealth = 10) {
             } else if (mugger.mood == "pissed") {
                 currentIndex = (currentIndex + 1) % muggerImages.length;
                 mugger.setTexture(muggerImages[currentIndex]);
+            } else if (mugger.mood == "dead") {
+                mugger.setTexture('muggerDead');
+                mugger.y = 600;
             }
             mugger.body.setSize(mugger.width, mugger.height);
         },
@@ -37,7 +40,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
 
     if (mugger.health <= 0) {
         scene.sound.play('successSound');
-        mugger.destroy();
+        mugger.mood = "dead";
         scene.girl.mood = "happy";
     } else {
         mugger.setTint(0xff0000);

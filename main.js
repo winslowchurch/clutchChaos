@@ -45,6 +45,7 @@ function preload() {
     this.load.image('mugger1', 'images/mugger1.png');
     this.load.image('mugger2', 'images/mugger2.png');
     this.load.image('muggerShoot', 'images/muggerShoot.png');
+    this.load.image('muggerDead', 'images/muggerDead.png');
     this.load.image('bullet', 'images/bullet.png');
 
     this.load.image('girl1', 'images/girl1.png'); 
@@ -100,7 +101,9 @@ function create() {
     // Handle projectile collision with mugger
     this.projectiles = this.physics.add.group(); // Create a group for projectiles
     this.physics.add.collider(this.projectiles, this.mugger, (mugger, projectile) => {
-        handleMuggerDamage(projectile, mugger, this, 1);
+        if (mugger.mood != "dead") {
+            handleMuggerDamage(projectile, mugger, this, 1);
+        }
     });
 
     this.add.text(20, 10, 'Clutch Chaos', {
@@ -119,7 +122,7 @@ function create() {
     this.time.addEvent({
         delay: 4000,
         callback: () => {
-            if (this.mugger.active) {
+            if (this.mugger.mood != "dead") {
                 this.mugger.mood = "shooty";
                 this.time.delayedCall(500, () => {
                     handleMuggerShoot(this, this.mugger, this.bullets);

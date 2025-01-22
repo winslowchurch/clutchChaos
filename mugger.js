@@ -23,6 +23,8 @@ export function createMugger(scene, maxHealth = 10) {
             } else if (mugger.mood == "dead") {
                 mugger.setTexture('muggerDead');
                 mugger.y = 600;
+            } else if (mugger.mood == "happy"){
+                mugger.setTexture('muggerHappy');
             }
             mugger.body.setSize(mugger.width, mugger.height);
         },

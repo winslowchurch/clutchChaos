@@ -3,9 +3,11 @@ import { createMugger, handleMuggerDamage, updateHealthBar, handleMuggerShoot } 
 import { createGirl } from "./girl.js";
 import { createFailscreen } from "./screens.js";
 
+// BUGS
+// you can still win after chick dies
+
 // TO DO
-// Mugger happy when she dies
-// Add another mugger attack
+// Make mugger move forward + instant kill if he touches girl
 // More sound effects
 
 export const config = {
@@ -44,6 +46,7 @@ function preload() {
     this.load.image('mugger2', 'images/mugger2.png');
     this.load.image('muggerShoot', 'images/muggerShoot.png');
     this.load.image('muggerDead', 'images/muggerDead.png');
+    this.load.image('muggerHappy', 'images/muggerHappy.png');
     this.load.image('bullet', 'images/bullet.png');
 
     this.load.image('girl1', 'images/girl1.png');
@@ -121,6 +124,7 @@ function create() {
     this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
         bullet.destroy();
         girl.mood = "dead"; 
+        this.mugger.mood = "happy";
         this.backgroundMusic.stop();
         this.sound.play('bwapSound');
         createFailscreen(this)
@@ -130,7 +134,7 @@ function create() {
     this.time.addEvent({
         delay: 2000,
         callback: () => {
-            if (this.mugger.mood !== "dead" && Math.random() < 0.4) {
+            if (this.mugger.mood == "pissed" && Math.random() < 0.4) {
                 this.mugger.mood = "shooty";
                 this.time.delayedCall(500, () => {
                     handleMuggerShoot(this, this.mugger, this.bullets);

@@ -2,6 +2,11 @@ import { createPlayer, handlePlayerMovement, handlePlayerAttack } from './player
 import { createMugger, handleMuggerDamage, updateHealthBar } from './mugger.js';
 import { createGirl } from "./girl.js";
 
+// TO DO
+// Make mugger move forward 
+// mugger sprite 
+// mugger cursing sounds
+
 const config = {
     type: Phaser.AUTO,
     width: 1000,
@@ -41,6 +46,7 @@ function preload() {
     this.load.audio('lipstickSound', 'assets/whoosh1.mp3');
     this.load.audio('walletSound', 'assets/whoosh2.mp3');
     this.load.audio('coinsSound', 'assets/coin.mp3');
+    this.load.audio('successSound', 'assets/success.mp3');
 }
 
 function create() {

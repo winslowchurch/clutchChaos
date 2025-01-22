@@ -44,7 +44,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
         scene.girl.mood = "happy";
     } else {
         mugger.setTint(0xff0000);
-        scene.time.delayedCall(100, () => mugger.clearTint());
+        scene.time.delayedCall(200, () => mugger.clearTint());
     }
 
     updateHealthBar(scene, mugger);

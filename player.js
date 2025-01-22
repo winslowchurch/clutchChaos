@@ -3,7 +3,7 @@ let attackCooldown = 500;
 let lastAttackTime = 0;
 
 export function createPlayer(scene) {
-    const player = scene.physics.add.sprite(400, 400, 'purse');
+    const player = scene.physics.add.sprite(200, 400, 'purse');
     player.setCollideWorldBounds(true);
     return player;
 }

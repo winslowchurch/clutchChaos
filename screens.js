@@ -1,9 +1,11 @@
+import { config } from "./main.js";
+
 export function createFailscreen(scene) {
     // Add static fail screen image
-    const failScreen = scene.add.image(500, 300, 'failScreen');
+    const failScreen = scene.add.image(config.centerWidth, config.centerHeight, 'failScreen');
 
     // Add fail text
-    const failText = scene.add.text(500, 250, 'YOU FAILED', {
+    const failText = scene.add.text(config.centerWidth, 250, 'YOU FAILED', {
         fontFamily: 'coolFont',
         fontSize: '60px',
         color: '#FFFFFF'
@@ -11,7 +13,7 @@ export function createFailscreen(scene) {
     failText.setOrigin(0.5);
 
     // Add retry button
-    const retryButton = scene.add.text(500, 380, 'Try Again', {
+    const retryButton = scene.add.text(config.centerWidth, 380, 'Try Again', {
         fontFamily: 'coolFont',
         fontSize: '40px',
         color: '#FFFFFF',

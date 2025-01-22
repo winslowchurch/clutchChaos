@@ -8,10 +8,12 @@ import { createFailscreen } from "./screens.js";
 // Title Screen
 // Victory Screen
 
-const config = {
+export const config = {
     type: Phaser.AUTO,
     width: 1000,
     height: 600,
+    centerWidth: 1000 / 2,
+    centerHeight: 600 / 2,
     scene: {
         preload: preload,
         create: create,
@@ -62,11 +64,18 @@ function preload() {
 }
 
 function create() {
-    this.background = this.add.image(config.width / 2, config.height / 2, 'background1');
+    this.background = this.add.image(config.centerWidth, config.centerHeight, 'background1');
     this.background.setDisplaySize(config.width, config.height);
 
+    this.time.addEvent({
+        delay: 1000,
+        callback: changeBackground,
+        callbackScope: this,
+        loop: true
+    });
+
     // Invisible floor
-    this.floor = this.add.rectangle(config.width / 2, config.height - 15, config.width, 30, 0x000000);
+    this.floor = this.add.rectangle(config.centerWidth, config.height - 15, config.width, 30, 0x000000);
     this.floor.setAlpha(0);
     this.physics.add.existing(this.floor, true);
 
@@ -133,4 +142,18 @@ function create() {
 function update(time) {
     handlePlayerMovement(this.player, this.keys);
     handlePlayerAttack(this, this.player, this.keys, time, this.projectiles);
+}
+
+function changeBackground() {
+    const backgrounds = ['background1', 'background2'];
+    const currentTexture = this.background.texture.key;
+    let nextTexture;
+
+    // Find the next texture (cycle through)
+    let currentIndex = backgrounds.indexOf(currentTexture);
+    let nextIndex = (currentIndex + 1) % backgrounds.length;
+    nextTexture = backgrounds[nextIndex];
+
+    // Change the background texture
+    this.background.setTexture(nextTexture);
 }

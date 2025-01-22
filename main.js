@@ -10,6 +10,8 @@ import { createGirl } from "./girl.js";
 // LATER
 // Levels
 // Add failure possibility
+// Title Screen
+// Victory Screen
 
 const config = {
     type: Phaser.AUTO,
@@ -52,6 +54,9 @@ function preload() {
     this.load.audio('walletSound', 'assets/whoosh2.mp3');
     this.load.audio('coinsSound', 'assets/coin.mp3');
     this.load.audio('successSound', 'assets/success.mp3');
+
+    // Font
+    this.load.css('fontStyle', 'assets/styles.css');
 }
 
 function create() {
@@ -92,6 +97,12 @@ function create() {
     this.projectiles = this.physics.add.group(); // Create a group for projectiles
     this.physics.add.collider(this.projectiles, this.mugger, (mugger, projectile) => {
         handleMuggerDamage(projectile, mugger, this, 1);
+    });
+
+    this.add.text(20, 10, 'Clutch Chaos', {
+        fontFamily: 'coolFont',
+        fontSize: '60px',
+        color: '#A64D79'
     });
     
     this.keys = this.input.keyboard.addKeys({

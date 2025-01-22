@@ -47,6 +47,6 @@ export function updateHealthBar(scene, mugger) {
     const healthPercentage = mugger.health / mugger.maxHealth;
     const healthWidth = BAR_LENGTH * healthPercentage; // Width based on health
 
-    scene.healthBar.fillStyle(0xA64D79, 1); 
+    scene.healthBar.fillStyle(0xA64D79, 1); // pink color
     scene.healthBar.fillRect(barX, barY, healthWidth, 20); // Rectangle for health
 }

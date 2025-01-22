@@ -1,4 +1,4 @@
-# Purse Pursuit 👛💫
+# Clutch Chaos 👛💫
 You’re an everyday handbag turned into a weapon when your owner is mugged. Use your contents to fend off attackers—throw lipstick, swing a heavy wallet, or blind enemies with a compact mirror.
 
 # Preview

@@ -4,13 +4,11 @@ import { createGirl } from "./girl.js";
 import { createFailscreen } from "./screens.js";
 
 // Bugs
-// Background music overlaps wack
 // Mugger moves all the way back
 
 // TO DO
-// Mugger not move all the way back
 // Title Screen
-// Victory Screen
+// More sound effects
 
 export const config = {
     type: Phaser.AUTO,
@@ -58,6 +56,8 @@ function preload() {
     // Screens
     this.load.image('failScreen', 'images/failScreen.png');
     this.load.image('successScreen', 'images/successScreen.png');
+    this.load.image('titleScreen', 'images/titleScreen.png');
+
 
     // Sounds
     this.load.audio('backgroundMusic', 'assets/backgroundMusic.mp3');

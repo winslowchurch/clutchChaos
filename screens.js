@@ -34,6 +34,7 @@ export function createFailscreen(scene) {
 
     // Restart the game on retry button click
     retryButton.on('pointerdown', () => {
+        scene.backgroundMusic.stop();
         scene.scene.restart();
     });
 
@@ -52,4 +53,24 @@ export function createSuccessScreen(scene) {
     youWinText.setOrigin(0.5);
 
     return successScreen;
+}
+
+export function createTitleScreen(scene) {
+    const titleScreen = scene.add.image(config.centerWidth, config.centerHeight, 'titleScreen');
+
+    const addCenteredText = (yOffset, text, fontSize='35px') => {
+        const textObj = scene.add.text(config.centerWidth, config.centerHeight + yOffset, text, {
+            fontFamily: 'coolFont',
+            fontSize: fontSize,
+            color: '#FFFFFF'
+        });
+        textObj.setOrigin(0.5);
+        return textObj;
+    };
+
+    addCenteredText(-100, 'How To Play:', '50px');
+    addCenteredText(-50, '- Use arrow/WASD keys to move');
+    addCenteredText(0, '- Hit spacebar to attack');
+
+    return titleScreen;
 }

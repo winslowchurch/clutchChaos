@@ -32,7 +32,7 @@ export function updateHealthBar(scene, mugger) {
     scene.healthBar.clear();
 
     const BAR_LENGTH = 150;
-    
+
     // Set the position of the health bar
     const barX = scene.cameras.main.width - BAR_LENGTH - 20; // Position from the right
     const barY = 20; // Position from the top

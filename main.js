@@ -23,6 +23,7 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
+    // Images
     this.load.image('background1', 'images/background1.png');
     this.load.image('background2', 'images/background2.png');
 
@@ -35,6 +36,11 @@ function preload() {
 
     this.load.image('girl1', 'images/girl1.png'); 
     this.load.image('girl2', 'images/girl2.png');
+
+    // Sounds
+    this.load.audio('lipstickSound', 'assets/whoosh1.mp3');
+    this.load.audio('walletSound', 'assets/whoosh2.mp3');
+    this.load.audio('coinsSound', 'assets/coin.mp3');
 }
 
 function create() {

@@ -46,8 +46,20 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
         projectile.setVelocityX(300);
         projectile.body.allowGravity = false;
 
+        switch (randomProjectile) {
+            case 'lipstick':
+                scene.sound.play('lipstickSound');
+                break;
+            case 'wallet':
+                scene.sound.play('walletSound');
+                break;
+            case 'coins':
+                scene.sound.play('coinsSound');
+                break;
+        }
+
         // Make the projectile spin
-        projectile.rotationSpeed = 0.1; // Adjust this value for faster/slower rotation
+        projectile.rotationSpeed = 0.1; 
 
         // Update function to spin the projectile
         scene.events.on('update', () => {

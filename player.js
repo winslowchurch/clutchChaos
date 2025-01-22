@@ -20,7 +20,7 @@ export function handlePlayerMovement(player, keys) {
 
     // Jumping
     if ((keys.up.isDown || keys.arrowUp.isDown) && player.body.touching.down) {
-        player.setVelocityY(-300); // Jump only when touching the floor
+        player.setVelocityY(-350); // Jump only when touching the floor
     }
 }
 

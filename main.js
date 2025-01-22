@@ -43,7 +43,9 @@ function preload() {
     this.load.image('lipstick', 'images/lipstick.png');
     this.load.image('wallet', 'images/wallet.png');
     this.load.image('coins', 'images/coins.png');
-    this.load.image('mugger', 'images/mugger.png');
+    this.load.image('mugger1', 'images/mugger1.png');
+    this.load.image('mugger2', 'images/mugger2.png');
+    this.load.image('muggerShoot', 'images/muggerShoot.png');
     this.load.image('bullet', 'images/bullet.png');
 
     this.load.image('girl1', 'images/girl1.png'); 
@@ -55,6 +57,7 @@ function preload() {
     this.load.audio('walletSound', 'assets/whoosh2.mp3');
     this.load.audio('coinsSound', 'assets/coin.mp3');
     this.load.audio('successSound', 'assets/success.mp3');
+    this.load.audio('gunshotSound', 'assets/gunshot.mp3');
 
     // Font
     this.load.css('fontStyle', 'assets/styles.css');
@@ -112,7 +115,10 @@ function create() {
         delay: 4000,
         callback: () => {
             if (this.mugger.active) {
-                handleMuggerShoot(this, this.mugger, this.bullets)
+                this.mugger.mood = "shooty";
+                this.time.delayedCall(500, () => {
+                    handleMuggerShoot(this, this.mugger, this.bullets);
+                })
             }
         },
         callbackScope: this,

@@ -1,5 +1,5 @@
 export function createGirl(scene) {
-    const girl = scene.physics.add.sprite(100, 400, 'girl1'); // Initial image
+    const girl = scene.physics.add.sprite(100, 400, 'girl1');
     girl.setCollideWorldBounds(true);
     girl.mood = "scared";
     girl.health = 2;
@@ -11,7 +11,6 @@ export function createGirl(scene) {
     scene.time.addEvent({
         delay: 500, // Change image every 500ms
         callback: () => {
-            // Check if the mugger is destroyed
             if (girl.mood == "happy") {
                 girl.setTexture('happyGirl');
             } else if (girl.mood == "scared") {

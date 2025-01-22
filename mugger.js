@@ -1,9 +1,28 @@
 export function createMugger(scene, maxHealth = 10) {
-    const mugger = scene.physics.add.sprite(800, 400, 'mugger');
+    const mugger = scene.physics.add.sprite(800, 400, 'mugger1');
     mugger.setCollideWorldBounds(true);
 
     mugger.health = maxHealth;
     mugger.maxHealth = maxHealth;
+    mugger.mood = 'pissed';
+
+    // Alternate between two images for the mugger
+    const muggerImages = ['mugger1', 'mugger2'];
+    let currentIndex = 0;
+
+    scene.time.addEvent({
+        delay: 500,
+        callback: () => {
+            if (mugger.mood == "shooty") {
+                mugger.setTexture('muggerShoot');
+            } else if (mugger.mood == "pissed") {
+                currentIndex = (currentIndex + 1) % muggerImages.length;
+                mugger.setTexture(muggerImages[currentIndex]);
+            }
+            mugger.body.setSize(mugger.width, mugger.height);
+        },
+        loop: true,
+    });
 
     return mugger;
 }
@@ -52,10 +71,11 @@ export function updateHealthBar(scene, mugger) {
 }
 
 export function handleMuggerShoot(scene, mugger, bullets) {
-    const bullet = bullets.create(mugger.x, mugger.y, 'bullet');
+    const bullet = bullets.create(mugger.x - 20, mugger.y - 50, 'bullet');
 
-    bullet.setVelocityX(-300);
+    bullet.setVelocityX(-450);
     bullet.body.allowGravity = false;
+    scene.sound.play('gunshotSound');
 
     // Destroy bullet when it leaves the screen
     scene.time.addEvent({
@@ -64,4 +84,5 @@ export function handleMuggerShoot(scene, mugger, bullets) {
             if (bullet.active) bullet.destroy();
         }
     });
+    mugger.mood = 'pissed';
 }

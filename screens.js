@@ -1,13 +1,12 @@
 import { config } from "./main.js";
 
 export function createFailscreen(scene) {
-    // Add static fail screen image
     const failScreen = scene.add.image(config.centerWidth, config.centerHeight, 'failScreen');
 
     // Add fail text
     const failText = scene.add.text(config.centerWidth, 250, 'YOU FAILED', {
         fontFamily: 'coolFont',
-        fontSize: '60px',
+        fontSize: '70px',
         color: '#FFFFFF'
     });
     failText.setOrigin(0.5);
@@ -39,4 +38,18 @@ export function createFailscreen(scene) {
     });
 
     return failScreen;
+}
+
+export function createSuccessScreen(scene) {
+    const successScreen = scene.add.image(config.centerWidth, config.centerHeight, 'successScreen');
+
+    // You win text
+    const youWinText = scene.add.text(config.centerWidth, config.centerHeight, 'You win!', {
+        fontFamily: 'coolFont',
+        fontSize: '100px',
+        color: '#FFFFFF'
+    });
+    youWinText.setOrigin(0.5);
+
+    return successScreen;
 }

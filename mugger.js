@@ -1,3 +1,5 @@
+import { createSuccessScreen } from "./screens.js";
+
 export function createMugger(scene, maxHealth = 10) {
     const mugger = scene.physics.add.sprite(800, 400, 'mugger1');
     mugger.setCollideWorldBounds(true);
@@ -42,6 +44,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
         scene.sound.play('successSound');
         mugger.mood = "dead";
         scene.girl.mood = "happy";
+        createSuccessScreen(scene)
     } else {
         mugger.setTint(0xff0000);
         scene.time.delayedCall(200, () => mugger.clearTint());

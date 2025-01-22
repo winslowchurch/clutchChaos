@@ -3,6 +3,10 @@ import { createMugger, handleMuggerDamage, updateHealthBar, handleMuggerShoot } 
 import { createGirl } from "./girl.js";
 import { createFailscreen } from "./screens.js";
 
+// Bugs
+// Background music overlaps wack
+// Mugger moves all the way back
+
 // TO DO
 // Mugger not move all the way back
 // Title Screen
@@ -53,6 +57,7 @@ function preload() {
 
     // Screens
     this.load.image('failScreen', 'images/failScreen.png');
+    this.load.image('successScreen', 'images/successScreen.png');
 
     // Sounds
     this.load.audio('backgroundMusic', 'assets/backgroundMusic.mp3');

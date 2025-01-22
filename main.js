@@ -4,7 +4,6 @@ import { createGirl } from "./girl.js";
 
 // TO DO
 // Make mugger move forward 
-// mugger sprite 
 // mugger cursing sounds
 
 // LATER
@@ -50,7 +49,8 @@ function preload() {
 
     this.load.image('girl1', 'images/girl1.png'); 
     this.load.image('girl2', 'images/girl2.png');
-    this.load.image('happyGirl', 'images/happyGirl.png');
+    this.load.image('girlHappy', 'images/happyGirl.png');
+    this.load.image('girlDead', 'images/girlDead.png');
 
     // Sounds
     this.load.audio('lipstickSound', 'assets/whoosh1.mp3');
@@ -110,6 +110,11 @@ function create() {
     });
 
     this.bullets = this.physics.add.group();
+    this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
+        bullet.destroy();
+        girl.mood = "dead"; 
+    });
+
     // Set up timer for the mugger to shoot bullets
     this.time.addEvent({
         delay: 4000,
@@ -127,10 +132,9 @@ function create() {
 
     // Handle collision between bullets and the player
     this.physics.add.collider(this.bullets, this.player, (player, bullet) => {
-        this.player.setVelocityX(-50);
-        bullet.destroy(); // Destroy bullet on collision with the purse
+        bullet.destroy();
     });
-    
+
     this.keys = this.input.keyboard.addKeys({
         up: Phaser.Input.Keyboard.KeyCodes.W,
         left: Phaser.Input.Keyboard.KeyCodes.A,

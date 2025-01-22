@@ -71,7 +71,7 @@ export function updateHealthBar(scene, mugger) {
 }
 
 export function handleMuggerShoot(scene, mugger, bullets) {
-    const bullet = bullets.create(mugger.x - 20, mugger.y - 50, 'bullet');
+    const bullet = bullets.create(mugger.x - 50, mugger.y - 50, 'bullet');
 
     bullet.setVelocityX(-450);
     bullet.body.allowGravity = false;

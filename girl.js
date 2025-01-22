@@ -12,11 +12,14 @@ export function createGirl(scene) {
         delay: 500, // Change image every 500ms
         callback: () => {
             if (girl.mood == "happy") {
-                girl.setTexture('happyGirl');
+                girl.setTexture('girlHappy');
             } else if (girl.mood == "scared") {
                 // Otherwise alternate between the girl images
                 currentIndex = (currentIndex + 1) % girlImages.length;
                 girl.setTexture(girlImages[currentIndex]);
+            } else if (girl.mood == "dead") {
+                girl.setTexture('girlDead');
+                girl.y = 600;
             }
             girl.body.setSize(girl.width, girl.height);
         },

@@ -19,6 +19,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
     if (mugger.health <= 0) {
         scene.sound.play('successSound');
         mugger.destroy();
+        scene.girl.mood = "happy";
     } else {
         mugger.setTint(0xff0000);
         scene.time.delayedCall(100, () => mugger.clearTint());

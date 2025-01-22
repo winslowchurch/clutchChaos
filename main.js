@@ -41,6 +41,8 @@ function preload() {
 
     this.load.image('girl1', 'images/girl1.png'); 
     this.load.image('girl2', 'images/girl2.png');
+    this.load.image('happyGirl', 'images/happyGirl.png');
+
 
     // Sounds
     this.load.audio('lipstickSound', 'assets/whoosh1.mp3');

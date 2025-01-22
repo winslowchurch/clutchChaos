@@ -7,7 +7,8 @@ import { createFailscreen } from "./screens.js";
 // Mugger moves all the way back
 
 // TO DO
-// Title Screen
+// Randomize gun shots
+// Add another mugger attack
 // More sound effects
 
 export const config = {
@@ -73,6 +74,12 @@ function create() {
     this.background = this.add.image(config.centerWidth, config.centerHeight, 'background1');
     this.background.setDisplaySize(config.width, config.height);
 
+    this.add.text(20, 10, 'Clutch Chaos', {
+        fontFamily: 'coolFont',
+        fontSize: '50px',
+        color: '#A64D79'
+    });
+
     this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true, volume: 0.5 });
     this.backgroundMusic.play();
 
@@ -99,19 +106,17 @@ function create() {
     this.physics.add.collider(this.mugger, this.floor);
     this.physics.add.collider(this.girl, this.floor);
 
+    // Mugger projectiles collision
     this.projectiles = this.physics.add.group();
     this.physics.add.collider(this.projectiles, this.mugger, (mugger, projectile) => {
         if (mugger.mood !== "dead") {
             handleMuggerDamage(projectile, mugger, this, 1);
+        } else {
+            projectile.destroy();
         }
     });
 
-    this.add.text(20, 10, 'Clutch Chaos', {
-        fontFamily: 'coolFont',
-        fontSize: '50px',
-        color: '#A64D79'
-    });
-
+    // Bullet girl collission
     this.bullets = this.physics.add.group();
     this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
         bullet.destroy();
@@ -119,10 +124,11 @@ function create() {
         createFailscreen(this)
     });
 
+    // 50% chance of shooting every 2 seconds
     this.time.addEvent({
-        delay: 4000,
+        delay: 2000,
         callback: () => {
-            if (this.mugger.mood !== "dead") {
+            if (this.mugger.mood !== "dead" && Math.random() < 0.5) {
                 this.mugger.mood = "shooty";
                 this.time.delayedCall(500, () => {
                     handleMuggerShoot(this, this.mugger, this.bullets);
@@ -130,7 +136,7 @@ function create() {
             }
         },
         callbackScope: this,
-        loop: true,
+        loop: true
     });
 
     this.physics.add.collider(this.bullets, this.player, (player, bullet) => {

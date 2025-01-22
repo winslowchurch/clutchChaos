@@ -7,7 +7,6 @@ import { createFailscreen } from "./screens.js";
 // Mugger moves all the way back
 
 // TO DO
-// Randomize gun shots
 // Add another mugger attack
 // More sound effects
 
@@ -67,6 +66,9 @@ function preload() {
     this.load.audio('coinsSound', 'assets/coin.mp3');
     this.load.audio('successSound', 'assets/success.mp3');
     this.load.audio('gunshotSound', 'assets/gunshot.mp3');
+    this.load.audio('bwapSound', 'assets/bwap.mp3');
+
+    // Font
     this.load.css('fontStyle', 'assets/styles.css');
 }
 
@@ -121,6 +123,8 @@ function create() {
     this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
         bullet.destroy();
         girl.mood = "dead"; 
+        this.backgroundMusic.stop();
+        this.sound.play('bwapSound');
         createFailscreen(this)
     });
 

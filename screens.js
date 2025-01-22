@@ -1,40 +1,44 @@
 import { config } from "./main.js";
 
+function createCenteredText(scene, yOffset, text, fontSize = '35px', color = '#FFFFFF') {
+    const textObj = scene.add.text(config.centerWidth, config.centerHeight + yOffset, text, {
+        fontFamily: 'coolFont',
+        fontSize: fontSize,
+        color: color
+    });
+    textObj.setOrigin(0.5);
+    return textObj;
+}
+
+const failTextOptions = [
+    "Better luck next time", 
+    "He touched her no-no square",
+    ":(",
+    "You let him shoot her?!!!",
+    "That's embarassing for you",
+    "You're not very good at this",
+    "At least you tried",
+];
+
 export function createFailscreen(scene) {
     const failScreen = scene.add.image(config.centerWidth, config.centerHeight, 'failScreen');
 
-    // Add fail text
-    const failText = scene.add.text(config.centerWidth, 250, 'YOU FAILED', {
-        fontFamily: 'coolFont',
-        fontSize: '70px',
-        color: '#FFFFFF'
-    });
-    failText.setOrigin(0.5);
+    createCenteredText(scene, -60, 'YOU FAILED', '70px');
+    const randomFailText = failTextOptions[Math.floor(Math.random() * failTextOptions.length)];
+    createCenteredText(scene, 30, randomFailText, '40px');
 
-    // Add retry button
-    const retryButton = scene.add.text(config.centerWidth, 380, 'Try Again', {
-        fontFamily: 'coolFont',
-        fontSize: '40px',
-        color: '#FFFFFF',
-        padding: { x: 10, y: 5 }
-    });
-    retryButton.setOrigin(0.5);
+    const retryButton = createCenteredText(scene, 100, 'Try Again', '40px');
     retryButton.setInteractive();
 
-    // Add hover effect to change text size
     retryButton.on('pointerover', () => {
-        retryButton.setStyle({ fontSize: '50px' }); // Increase font size
-        retryButton.setOrigin(0.5); // Re-center the text
+        retryButton.setStyle({ fontSize: '50px' });
     });
 
     retryButton.on('pointerout', () => {
-        retryButton.setStyle({ fontSize: '40px' }); // Reset font size
-        retryButton.setOrigin(0.5); // Re-center the text
+        retryButton.setStyle({ fontSize: '40px' }); 
     });
 
-    // Restart the game on retry button click
     retryButton.on('pointerdown', () => {
-        scene.backgroundMusic.stop();
         scene.scene.restart();
     });
 
@@ -44,13 +48,7 @@ export function createFailscreen(scene) {
 export function createSuccessScreen(scene) {
     const successScreen = scene.add.image(config.centerWidth, config.centerHeight, 'successScreen');
 
-    // You win text
-    const youWinText = scene.add.text(config.centerWidth, config.centerHeight, 'You win!', {
-        fontFamily: 'coolFont',
-        fontSize: '100px',
-        color: '#FFFFFF'
-    });
-    youWinText.setOrigin(0.5);
+    createCenteredText(scene, 0, 'You win!', '100px');
 
     return successScreen;
 }
@@ -58,19 +56,9 @@ export function createSuccessScreen(scene) {
 export function createTitleScreen(scene) {
     const titleScreen = scene.add.image(config.centerWidth, config.centerHeight, 'titleScreen');
 
-    const addCenteredText = (yOffset, text, fontSize='35px') => {
-        const textObj = scene.add.text(config.centerWidth, config.centerHeight + yOffset, text, {
-            fontFamily: 'coolFont',
-            fontSize: fontSize,
-            color: '#FFFFFF'
-        });
-        textObj.setOrigin(0.5);
-        return textObj;
-    };
-
-    addCenteredText(-100, 'How To Play:', '50px');
-    addCenteredText(-50, '- Use arrow/WASD keys to move');
-    addCenteredText(0, '- Hit spacebar to attack');
+    createCenteredText(scene, -100, 'How To Play:', '50px');
+    createCenteredText(scene, -50, '- Use arrow/WASD keys to move');
+    createCenteredText(scene, 0, '- Hit spacebar to attack');
 
     return titleScreen;
 }

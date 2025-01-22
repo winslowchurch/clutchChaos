@@ -3,10 +3,8 @@ import { createMugger, handleMuggerDamage, updateHealthBar, handleMuggerShoot } 
 import { createGirl } from "./girl.js";
 import { createFailscreen } from "./screens.js";
 
-// Bugs
-// Mugger moves all the way back
-
 // TO DO
+// Mugger happy when she dies
 // Add another mugger attack
 // More sound effects
 
@@ -128,11 +126,11 @@ function create() {
         createFailscreen(this)
     });
 
-    // 50% chance of shooting every 2 seconds
+    // 40% chance of shooting every 2 seconds
     this.time.addEvent({
         delay: 2000,
         callback: () => {
-            if (this.mugger.mood !== "dead" && Math.random() < 0.5) {
+            if (this.mugger.mood !== "dead" && Math.random() < 0.4) {
                 this.mugger.mood = "shooty";
                 this.time.delayedCall(500, () => {
                     handleMuggerShoot(this, this.mugger, this.bullets);
@@ -143,6 +141,7 @@ function create() {
         loop: true
     });
 
+    // Purse destroys bullet
     this.physics.add.collider(this.bullets, this.player, (player, bullet) => {
         bullet.destroy();
     });

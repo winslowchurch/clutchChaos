@@ -46,6 +46,12 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
         scene.girl.mood = "happy";
         createSuccessScreen(scene)
     } else {
+        // Apply a small knockback force to the mugger
+        const knockbackForce = 100; 
+        const direction = projectile.x < mugger.x ? 1 : -1;
+        mugger.setVelocityX(knockbackForce * direction); // Apply knockback in the direction
+        scene.time.delayedCall(100, () => mugger.setVelocityX(0)); // Stop movement after a short delay
+
         mugger.setTint(0xff0000);
         scene.time.delayedCall(200, () => mugger.clearTint());
     }

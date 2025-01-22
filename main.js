@@ -55,6 +55,7 @@ function preload() {
     this.load.image('failScreen', 'images/failScreen.png');
 
     // Sounds
+    this.load.audio('backgroundMusic', 'assets/backgroundMusic.mp3');
     this.load.audio('lipstickSound', 'assets/whoosh1.mp3');
     this.load.audio('walletSound', 'assets/whoosh2.mp3');
     this.load.audio('coinsSound', 'assets/coin.mp3');
@@ -66,6 +67,9 @@ function preload() {
 function create() {
     this.background = this.add.image(config.centerWidth, config.centerHeight, 'background1');
     this.background.setDisplaySize(config.width, config.height);
+
+    this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true, volume: 0.5 });
+    this.backgroundMusic.play();
 
     this.time.addEvent({
         delay: 1000,

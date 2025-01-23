@@ -1,6 +1,7 @@
-import { createSuccessScreen } from "./screens.js";
+import { handleLevelEnd } from "./screens.js";
+import { levels } from "./main.js";
 
-export function createMugger(scene, maxHealth = 10) {
+export function createMugger(scene, maxHealth = 1) {
   const mugger = scene.physics.add.sprite(800, 400, "mugger1");
   mugger.setCollideWorldBounds(true);
 
@@ -9,12 +10,14 @@ export function createMugger(scene, maxHealth = 10) {
   mugger.mood = "pissed";
 
   // Alternate between two images for the mugger
-  const muggerImages = ["mugger1", "mugger2"];
+  const muggerImages = levels[scene.currentLevel].enemies;
   let currentIndex = 0;
 
   scene.time.addEvent({
     delay: 500,
     callback: () => {
+      if (!scene || !mugger.scene) return;
+
       if (mugger.mood == "shooty") {
         mugger.setTexture("muggerShoot");
       } else if (mugger.mood == "pissed") {
@@ -29,6 +32,7 @@ export function createMugger(scene, maxHealth = 10) {
       mugger.body.setSize(mugger.width, mugger.height);
     },
     loop: true,
+    callbackScope: scene,
   });
 
   return mugger;
@@ -46,7 +50,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
     scene.sound.play("successSound");
     mugger.mood = "dead";
     scene.girl.mood = "happy";
-    createSuccessScreen(scene);
+    handleLevelEnd(scene);
   } else {
     // Apply a small knockback force to the mugger
     const knockbackForce = 100;

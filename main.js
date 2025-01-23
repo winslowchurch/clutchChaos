@@ -18,6 +18,7 @@ import {
 
 // BUGS
 // you can still win after chick dies
+// fix try again screen
 
 // TO DO
 // More sound effects
@@ -48,6 +49,8 @@ function preload() {
   // Images
   this.load.image("street1", "images/street1.png");
   this.load.image("street2", "images/street2.png");
+  this.load.image("subway1", "images/subway1.png");
+  this.load.image("subway2", "images/subway2.png");
 
   this.load.image("purse", "images/purse.png");
   this.load.image("purseAttack", "images/purseAttack.png");
@@ -86,18 +89,40 @@ function preload() {
   this.load.css("fontStyle", "assets/styles.css");
 }
 
+export const levels = [
+  {
+    backgrounds: ["street1", "street2"],
+    enemies: ["mugger1", "mugger2"],
+  },
+  {
+    backgrounds: ["subway1", "subway2"],
+    enemies: ["mugger1", "mugger2"],
+  },
+];
+
+let gameStarted = false;
+let currentLevel = 0;
 function create() {
-  handleShowBackground(this);
+  // show background
+  handleShowBackground(this, currentLevel);
+
+  // play music
+  this.backgroundMusic = this.sound.add("backgroundMusic", {
+    loop: true,
+    volume: 0.5,
+  });
+  this.backgroundMusic.play();
+
   if (gameStarted) {
-    startGame(this); // Directly start the game
+    startGame(this, currentLevel); // Directly start the game
   } else {
     createTitleScreen(this); // Show the title screen
   }
 }
 
-let gameStarted = false;
-export function startGame(scene) {
-  gameStarted = true;
+export function startGame(scene, levelIndex) {
+  scene.currentLevel = levelIndex;
+  currentLevel = levelIndex;
 
   // Invisible floor
   scene.floor = scene.add.rectangle(

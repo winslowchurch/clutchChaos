@@ -11,6 +11,8 @@ export function createGirl(scene) {
   scene.time.addEvent({
     delay: 500, // Change image every 500ms
     callback: () => {
+      if (!scene || !girl.scene) return;
+
       if (girl.mood == "happy") {
         girl.setTexture("girlHappy");
       } else if (girl.mood == "scared") {

@@ -1,4 +1,4 @@
-import { config, startGame } from "./main.js";
+import { config, startGame, levels } from "./main.js";
 
 function createCenteredText(
   scene,
@@ -30,6 +30,47 @@ const failTextOptions = [
   "You're not very good at this",
   "At least you tried",
 ];
+
+export function handleLevelEnd(scene) {
+  if (scene.currentLevel < levels.length - 1) {
+    createNextLevelScreen(scene);
+  } else {
+    createSuccessScreen(scene);
+  }
+}
+
+export function createNextLevelScreen(scene) {
+  const nextLevelScreen = scene.add.image(
+    config.centerWidth,
+    config.centerHeight,
+    "successScreen"
+  );
+  const congratsText = createCenteredText(scene, 0, "Nice job!", "100px");
+
+  const nextButton = createCenteredText(scene, 50, "Next Level", "40px");
+  nextButton.setInteractive();
+
+  nextButton.on("pointerover", () => {
+    nextButton.setStyle({ fontSize: "50px" });
+  });
+
+  nextButton.on("pointerout", () => {
+    nextButton.setStyle({ fontSize: "40px" });
+  });
+
+  nextButton.on("pointerdown", () => {
+    scene.sound.play("boopSound");
+    nextLevelScreen.destroy();
+    congratsText.destroy();
+    nextButton.destroy();
+    clearScene(scene);
+
+    handleShowBackground(scene, scene.currentLevel + 1);
+    startGame(scene, scene.currentLevel + 1);
+  });
+
+  return nextLevelScreen;
+}
 
 export function handleFailScenario(scene) {
   scene.girl.mood = "dead";
@@ -78,7 +119,6 @@ export function createSuccessScreen(scene) {
   );
 
   createCenteredText(scene, 0, "You win!", "100px");
-
   return successScreen;
 }
 
@@ -106,55 +146,67 @@ export function createTitleScreen(scene) {
 
   startButton.on("pointerdown", () => {
     scene.sound.play("boopSound");
-    startGame(scene);
     titleScreen.destroy();
     text1.destroy();
     text2.destroy();
     text3.destroy();
     startButton.destroy();
+    startGame(scene, 0);
   });
 
   return titleScreen;
 }
 
-export function handleShowBackground(scene) {
+export function handleShowBackground(scene, currentLevel) {
   scene.background = scene.add.image(
     config.centerWidth,
     config.centerHeight,
-    "street1"
+    levels[currentLevel].backgrounds[0]
   );
   scene.background.setDisplaySize(config.width, config.height);
+
+  scene.time.addEvent({
+    delay: 1000,
+    callback: () => changeBackground(scene, currentLevel),
+    callbackScope: scene,
+    loop: true,
+  });
 
   scene.add.text(20, 10, "Clutch Chaos", {
     fontFamily: "coolFont",
     fontSize: "50px",
     color: "#A64D79",
   });
-
-  scene.backgroundMusic = scene.sound.add("backgroundMusic", {
-    loop: true,
-    volume: 0.5,
-  });
-  scene.backgroundMusic.play();
-
-  scene.time.addEvent({
-    delay: 1000,
-    callback: changeBackground(scene),
-    callbackScope: scene,
-    loop: true,
-  });
 }
 
-function changeBackground(scene) {
-  const backgrounds = ["street1", "street2"];
+function changeBackground(scene, currentLevel) {
+  const backgrounds = levels[currentLevel].backgrounds;
   const currentTexture = scene.background.texture.key;
-  let nextTexture;
 
-  // Find the next texture (cycle through)
   let currentIndex = backgrounds.indexOf(currentTexture);
   let nextIndex = (currentIndex + 1) % backgrounds.length;
-  nextTexture = backgrounds[nextIndex];
 
-  // Change the background texture
-  scene.background.setTexture(nextTexture);
+  if (scene.background) {
+    scene.background.setTexture(backgrounds[nextIndex]);
+  } else {
+    console.error("Background not found");
+  }
+}
+
+export function clearScene(scene) {
+  if (scene.player) {
+    scene.player.destroy();
+  }
+  if (scene.mugger) {
+    scene.mugger.destroy();
+  }
+  if (scene.girl) {
+    scene.girl.destroy();
+  }
+  if (scene.floor) {
+    scene.floor.destroy();
+  }
+  if (scene.background) {
+    scene.background.destroy();
+  }
 }

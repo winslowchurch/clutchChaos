@@ -2,7 +2,6 @@ export function createGirl(scene) {
   const girl = scene.physics.add.sprite(100, 400, "girl1");
   girl.setCollideWorldBounds(true);
   girl.mood = "scared";
-  girl.health = 2;
 
   // Alternate between two images for the girl
   const girlImages = ["girl1", "girl2"];
@@ -29,4 +28,9 @@ export function createGirl(scene) {
   });
 
   return girl;
+}
+
+export function resetGirl(scene) {
+  scene.girl.mood = "scared";
+  scene.girl.setPosition(100, 400);
 }

@@ -1,4 +1,7 @@
 import { config, startGame, levels } from "./main.js";
+import { resetMugger } from "./mugger.js";
+import { resetGirl } from "./girl.js";
+import { resetPlayer } from "./player.js";
 
 function createCenteredText(
   scene,
@@ -63,10 +66,9 @@ export function createNextLevelScreen(scene) {
     nextLevelScreen.destroy();
     congratsText.destroy();
     nextButton.destroy();
-    clearScene(scene);
 
-    handleShowBackground(scene, scene.currentLevel + 1);
-    startGame(scene, scene.currentLevel + 1);
+    scene.currentLevel += 1;
+    resetLevel(scene);
   });
 
   return nextLevelScreen;
@@ -87,10 +89,10 @@ export function createFailscreen(scene) {
     "failScreen"
   );
 
-  createCenteredText(scene, -60, "YOU FAILED", "70px");
-  const randomFailText =
+  const failText = createCenteredText(scene, -60, "YOU FAILED", "70px");
+  const randomText =
     failTextOptions[Math.floor(Math.random() * failTextOptions.length)];
-  createCenteredText(scene, 30, randomFailText, "40px");
+  const randomFailText = createCenteredText(scene, 30, randomText, "40px");
 
   const retryButton = createCenteredText(scene, 100, "Try Again", "40px");
   retryButton.setInteractive();
@@ -105,7 +107,11 @@ export function createFailscreen(scene) {
 
   retryButton.on("pointerdown", () => {
     scene.sound.play("boopSound");
-    scene.scene.restart();
+    failScreen.destroy();
+    retryButton.destroy();
+    failText.destroy();
+    randomFailText.destroy();
+    resetLevel(scene);
   });
 
   return failScreen;
@@ -130,10 +136,10 @@ export function createTitleScreen(scene) {
   );
 
   const text1 = createCenteredText(scene, -100, "How To Play:", "50px");
-  const text2 = createCenteredText(scene, -50, "- Use arrow/WASD keys to move");
-  const text3 = createCenteredText(scene, 0, "- Hit spacebar to attack");
+  const text2 = createCenteredText(scene, -20, "- Use arrow/WASD keys to move");
+  const text3 = createCenteredText(scene, 20, "- Hit spacebar to attack");
 
-  const startButton = createCenteredText(scene, 50, "Start", "40px");
+  const startButton = createCenteredText(scene, 100, "Start", "40px");
   startButton.setInteractive();
 
   startButton.on("pointerover", () => {
@@ -157,56 +163,32 @@ export function createTitleScreen(scene) {
   return titleScreen;
 }
 
-export function handleShowBackground(scene, currentLevel) {
-  scene.background = scene.add.image(
+export function createBackground(scene) {
+  scene.backgrounds = levels[scene.currentLevel].backgrounds;
+  const background = scene.add.image(
     config.centerWidth,
     config.centerHeight,
-    levels[currentLevel].backgrounds[0]
+    scene.backgrounds[0]
   );
-  scene.background.setDisplaySize(config.width, config.height);
-
-  scene.time.addEvent({
-    delay: 1000,
-    callback: () => changeBackground(scene, currentLevel),
-    callbackScope: scene,
-    loop: true,
-  });
+  background.setDisplaySize(config.width, config.height);
 
   scene.add.text(20, 10, "Clutch Chaos", {
     fontFamily: "coolFont",
     fontSize: "50px",
     color: "#A64D79",
   });
+  return background;
 }
 
-function changeBackground(scene, currentLevel) {
-  const backgrounds = levels[currentLevel].backgrounds;
-  const currentTexture = scene.background.texture.key;
-
-  let currentIndex = backgrounds.indexOf(currentTexture);
-  let nextIndex = (currentIndex + 1) % backgrounds.length;
-
-  if (scene.background) {
-    scene.background.setTexture(backgrounds[nextIndex]);
-  } else {
-    console.error("Background not found");
-  }
+function resetBackground(scene) {
+  const backgrounds = levels[scene.currentLevel].backgrounds;
+  scene.backgrounds = backgrounds;
+  scene.background.setTexture(backgrounds[0]);
 }
 
-export function clearScene(scene) {
-  if (scene.player) {
-    scene.player.destroy();
-  }
-  if (scene.mugger) {
-    scene.mugger.destroy();
-  }
-  if (scene.girl) {
-    scene.girl.destroy();
-  }
-  if (scene.floor) {
-    scene.floor.destroy();
-  }
-  if (scene.background) {
-    scene.background.destroy();
-  }
+function resetLevel(scene) {
+  resetMugger(scene);
+  resetPlayer(scene);
+  resetGirl(scene);
+  resetBackground(scene);
 }

@@ -1,13 +1,14 @@
 import { handleLevelEnd } from "./screens.js";
 import { levels } from "./main.js";
 
-export function createMugger(scene, maxHealth = 1) {
+export function createMugger(scene, maxHealth = 10) {
   const mugger = scene.physics.add.sprite(800, 400, "mugger1");
   mugger.setCollideWorldBounds(true);
 
   mugger.health = maxHealth;
   mugger.maxHealth = maxHealth;
   mugger.mood = "pissed";
+  mugger.gunSpeed = -500;
 
   // Alternate between two images for the mugger
   const muggerImages = levels[scene.currentLevel].enemies;
@@ -90,7 +91,7 @@ export function updateHealthBar(scene, mugger) {
 export function handleMuggerShoot(scene, mugger, bullets) {
   const bullet = bullets.create(mugger.x - 50, mugger.y - 50, "bullet");
 
-  bullet.setVelocityX(-450);
+  bullet.setVelocityX(mugger.gunSpeed);
   bullet.body.allowGravity = false;
   scene.sound.play("gunshotSound", { volume: 0.4 });
 
@@ -102,4 +103,10 @@ export function handleMuggerShoot(scene, mugger, bullets) {
     },
   });
   mugger.mood = "pissed";
+}
+
+export function resetMugger(scene) {
+  scene.mugger.setPosition(800, 400);
+  scene.mugger.mood = "pissed";
+  scene.mugger.health = scene.mugger.maxHealth;
 }

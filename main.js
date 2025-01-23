@@ -13,7 +13,7 @@ import { createGirl } from "./girl.js";
 import {
   handleFailScenario,
   createTitleScreen,
-  handleShowBackground,
+  createBackground,
 } from "./screens.js";
 
 // BUGS
@@ -101,10 +101,24 @@ export const levels = [
 ];
 
 let gameStarted = false;
-let currentLevel = 0;
 function create() {
   // show background
-  handleShowBackground(this, currentLevel);
+  this.currentLevel = 0;
+  this.background = createBackground(this);
+
+  this.time.addEvent({
+    delay: 1000,
+    callback: () => {
+      // alternate background
+      console.log(this.backgrounds, this.background);
+      const currentTexture = this.background.texture.key;
+      let currentIndex = this.backgrounds.indexOf(currentTexture);
+      let nextIndex = (currentIndex + 1) % this.backgrounds.length;
+      this.background.setTexture(this.backgrounds[nextIndex]);
+    },
+    callbackScope: this,
+    loop: true,
+  });
 
   // play music
   this.backgroundMusic = this.sound.add("backgroundMusic", {
@@ -114,16 +128,13 @@ function create() {
   this.backgroundMusic.play();
 
   if (gameStarted) {
-    startGame(this, currentLevel); // Directly start the game
+    startGame(this); // Directly start the game
   } else {
     createTitleScreen(this); // Show the title screen
   }
 }
 
-export function startGame(scene, levelIndex) {
-  scene.currentLevel = levelIndex;
-  currentLevel = levelIndex;
-
+export function startGame(scene) {
   // Invisible floor
   scene.floor = scene.add.rectangle(
     config.centerWidth,

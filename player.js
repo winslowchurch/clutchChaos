@@ -73,3 +73,7 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
     scene.time.delayedCall(3000, () => projectile.destroy());
   }
 }
+
+export function resetPlayer(scene) {
+  scene.player.setPosition(200, 400);
+}

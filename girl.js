@@ -32,5 +32,5 @@ export function createGirl(scene) {
 
 export function resetGirl(scene) {
   scene.girl.mood = "scared";
-  scene.girl.setPosition(100, 450);
+  scene.girl.setPosition(100, 350);
 }

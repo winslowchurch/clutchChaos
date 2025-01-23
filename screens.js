@@ -54,11 +54,11 @@ export function createNextLevelScreen(scene) {
   nextButton.setInteractive();
 
   nextButton.on("pointerover", () => {
-    nextButton.setStyle({ fontSize: "50px" });
+    nextButton.setStyle({ fontSize: "60px" });
   });
 
   nextButton.on("pointerout", () => {
-    nextButton.setStyle({ fontSize: "40px" });
+    nextButton.setStyle({ fontSize: "50px" });
   });
 
   nextButton.on("pointerdown", () => {
@@ -77,7 +77,6 @@ export function createNextLevelScreen(scene) {
 export function handleFailScenario(scene) {
   scene.girl.mood = "dead";
   scene.mugger.mood = "happy";
-  scene.backgroundMusic.stop();
   scene.sound.play("bwapSound");
   createFailscreen(scene);
 }
@@ -107,6 +106,7 @@ export function createFailscreen(scene) {
 
   retryButton.on("pointerdown", () => {
     scene.sound.play("boopSound");
+    scene.backgroundMusic.play();
     failScreen.destroy();
     retryButton.destroy();
     failText.destroy();

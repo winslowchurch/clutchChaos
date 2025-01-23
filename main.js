@@ -16,9 +16,6 @@ import {
   createBackground,
 } from "./screens.js";
 
-// BUGS
-// you can still win after chick dies
-
 // TO DO
 // More sound effects
 
@@ -56,13 +53,14 @@ function preload() {
   this.load.image("lipstick", "images/lipstick.png");
   this.load.image("wallet", "images/wallet.png");
   this.load.image("coins", "images/coins.png");
+  this.load.image("keys", "images/keys.png");
+  this.load.image("chips", "images/chips.png");
   this.load.image("mugger1", "images/mugger1.png");
   this.load.image("mugger2", "images/mugger2.png");
   this.load.image("muggerShoot", "images/muggerShoot.png");
   this.load.image("muggerDead", "images/muggerDead.png");
   this.load.image("muggerHappy", "images/muggerHappy.png");
   this.load.image("bullet", "images/bullet.png");
-
   this.load.image("girl1", "images/girl1.png");
   this.load.image("girl2", "images/girl2.png");
   this.load.image("girlHappy", "images/happyGirl.png");
@@ -83,6 +81,7 @@ function preload() {
   this.load.audio("bwapSound", "assets/bwap.mp3");
   this.load.audio("boingSound", "assets/boing.mp3");
   this.load.audio("boopSound", "assets/boop.wav");
+  this.load.audio("popSound", "assets/pop.mp3");
 
   // Font
   this.load.css("fontStyle", "assets/styles.css");
@@ -172,8 +171,11 @@ export function startGame(scene) {
   // Bullet girl collission
   scene.bullets = scene.physics.add.group();
   scene.physics.add.collider(scene.bullets, scene.girl, (girl, bullet) => {
-    bullet.destroy();
-    handleFailScenario(scene);
+    if (scene.mugger.mood !== "dead") {
+      bullet.destroy();
+      scene.backgroundMusic.stop();
+      handleFailScenario(scene);
+    }
   });
 
   scene.time.addEvent({

@@ -39,7 +39,7 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
     player.setVelocityY(-50);
 
     // Randomly select a projectile type
-    const projectileImages = ["lipstick", "wallet", "coins"];
+    const projectileImages = ["lipstick", "wallet", "coins", "keys", "chips"];
     const randomProjectile = Phaser.Utils.Array.GetRandom(projectileImages);
 
     // Create the projectile
@@ -56,6 +56,12 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
         break;
       case "coins":
         scene.sound.play("coinsSound", { volume: 0.4 });
+        break;
+      case "keys":
+        scene.sound.play("coinsSound", { volume: 0.4 });
+        break;
+      case "chips":
+        scene.sound.play("popSound", { volume: 0.4 });
         break;
     }
 

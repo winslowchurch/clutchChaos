@@ -10,14 +10,17 @@ import {
   handleMuggerShoot,
 } from "./mugger.js";
 import { createGirl } from "./girl.js";
-import { handleFailScenario } from "./screens.js";
+import {
+  handleFailScenario,
+  createTitleScreen,
+  handleShowBackground,
+} from "./screens.js";
 
 // BUGS
 // you can still win after chick dies
 
 // TO DO
 // More sound effects
-// Hook in title screen
 
 export const config = {
   type: Phaser.AUTO,
@@ -84,62 +87,48 @@ function preload() {
 }
 
 function create() {
-  this.background = this.add.image(
-    config.centerWidth,
-    config.centerHeight,
-    "street1"
-  );
-  this.background.setDisplaySize(config.width, config.height);
+  handleShowBackground(this);
+  if (gameStarted) {
+    startGame(this); // Directly start the game
+  } else {
+    createTitleScreen(this); // Show the title screen
+  }
+}
 
-  this.add.text(20, 10, "Clutch Chaos", {
-    fontFamily: "coolFont",
-    fontSize: "50px",
-    color: "#A64D79",
-  });
-
-  this.backgroundMusic = this.sound.add("backgroundMusic", {
-    loop: true,
-    volume: 0.5,
-  });
-  this.backgroundMusic.play();
-
-  this.time.addEvent({
-    delay: 1000,
-    callback: changeBackground,
-    callbackScope: this,
-    loop: true,
-  });
+let gameStarted = false;
+export function startGame(scene) {
+  gameStarted = true;
 
   // Invisible floor
-  this.floor = this.add.rectangle(
+  scene.floor = scene.add.rectangle(
     config.centerWidth,
     config.height - 15,
     config.width,
     30,
     0x000000
   );
-  this.floor.setAlpha(0);
-  this.physics.add.existing(this.floor, true);
+  scene.floor.setAlpha(0);
+  scene.physics.add.existing(scene.floor, true);
 
-  this.player = createPlayer(this);
-  this.mugger = createMugger(this);
-  this.healthBar = this.add.graphics();
-  updateHealthBar(this, this.mugger);
-  this.girl = createGirl(this);
+  scene.player = createPlayer(scene);
+  scene.mugger = createMugger(scene);
+  scene.healthBar = scene.add.graphics();
+  updateHealthBar(scene, scene.mugger);
+  scene.girl = createGirl(scene);
 
   // Player, Mugger, Purse collide with floor
-  this.physics.add.collider(this.player, this.floor);
-  this.physics.add.collider(this.mugger, this.floor);
-  this.physics.add.collider(this.girl, this.floor);
+  scene.physics.add.collider(scene.player, scene.floor);
+  scene.physics.add.collider(scene.mugger, scene.floor);
+  scene.physics.add.collider(scene.girl, scene.floor);
 
   // Mugger projectiles collision
-  this.projectiles = this.physics.add.group();
-  this.physics.add.collider(
-    this.projectiles,
-    this.mugger,
+  scene.projectiles = scene.physics.add.group();
+  scene.physics.add.collider(
+    scene.projectiles,
+    scene.mugger,
     (mugger, projectile) => {
       if (mugger.mood !== "dead") {
-        handleMuggerDamage(projectile, mugger, this, 1);
+        handleMuggerDamage(projectile, mugger, scene, 1);
       } else {
         projectile.destroy();
       }
@@ -147,46 +136,46 @@ function create() {
   );
 
   // Bullet girl collission
-  this.bullets = this.physics.add.group();
-  this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
+  scene.bullets = scene.physics.add.group();
+  scene.physics.add.collider(scene.bullets, scene.girl, (girl, bullet) => {
     bullet.destroy();
-    handleFailScenario(this);
+    handleFailScenario(scene);
   });
 
-  this.time.addEvent({
+  scene.time.addEvent({
     delay: 2000,
     callback: () => {
-      if (this.mugger.mood == "pissed") {
+      if (scene.mugger.mood == "pissed") {
         // 40% chance of shooting gun
         if (Math.random() < 0.4) {
-          this.mugger.mood = "shooty";
-          this.time.delayedCall(500, () => {
-            handleMuggerShoot(this, this.mugger, this.bullets);
+          scene.mugger.mood = "shooty";
+          scene.time.delayedCall(500, () => {
+            handleMuggerShoot(scene, scene.mugger, scene.bullets);
           });
         }
         // move forward
-        this.mugger.setVelocityX(-70);
-        this.time.delayedCall(500, () => {
-          this.mugger.setVelocityX(0);
+        scene.mugger.setVelocityX(-70);
+        scene.time.delayedCall(500, () => {
+          scene.mugger.setVelocityX(0);
         });
       }
     },
-    callbackScope: this,
-    loop: true,
+    callbackScope: scene,
+    loop: scene,
   });
 
   // Purse destroys bullet
-  this.physics.add.collider(this.bullets, this.player, (player, bullet) => {
+  scene.physics.add.collider(scene.bullets, scene.player, (player, bullet) => {
     bullet.destroy();
   });
 
   // Mugger touching girl = insta kill
-  this.physics.add.collider(this.mugger, this.girl, (mugger, girl) => {
+  scene.physics.add.collider(scene.mugger, scene.girl, (mugger, girl) => {
     mugger.x += 50; // move him back
-    handleFailScenario(this);
+    handleFailScenario(scene);
   });
 
-  this.keys = this.input.keyboard.addKeys({
+  scene.keys = scene.input.keyboard.addKeys({
     up: Phaser.Input.Keyboard.KeyCodes.W,
     left: Phaser.Input.Keyboard.KeyCodes.A,
     right: Phaser.Input.Keyboard.KeyCodes.D,
@@ -198,20 +187,8 @@ function create() {
 }
 
 function update(time) {
-  handlePlayerMovement(this, this.player, this.keys);
-  handlePlayerAttack(this, this.player, this.keys, time, this.projectiles);
-}
-
-function changeBackground() {
-  const backgrounds = ["street1", "street2"];
-  const currentTexture = this.background.texture.key;
-  let nextTexture;
-
-  // Find the next texture (cycle through)
-  let currentIndex = backgrounds.indexOf(currentTexture);
-  let nextIndex = (currentIndex + 1) % backgrounds.length;
-  nextTexture = backgrounds[nextIndex];
-
-  // Change the background texture
-  this.background.setTexture(nextTexture);
+  if (this.player) {
+    handlePlayerMovement(this, this.player, this.keys);
+    handlePlayerAttack(this, this.player, this.keys, time, this.projectiles);
+  }
 }

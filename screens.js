@@ -1,4 +1,4 @@
-import { config } from "./main.js";
+import { config, startGame } from "./main.js";
 
 function createCenteredText(
   scene,
@@ -89,9 +89,9 @@ export function createTitleScreen(scene) {
     "titleScreen"
   );
 
-  createCenteredText(scene, -100, "How To Play:", "50px");
-  createCenteredText(scene, -50, "- Use arrow/WASD keys to move");
-  createCenteredText(scene, 0, "- Hit spacebar to attack");
+  const text1 = createCenteredText(scene, -100, "How To Play:", "50px");
+  const text2 = createCenteredText(scene, -50, "- Use arrow/WASD keys to move");
+  const text3 = createCenteredText(scene, 0, "- Hit spacebar to attack");
 
   const startButton = createCenteredText(scene, 50, "Start", "40px");
   startButton.setInteractive();
@@ -106,8 +106,55 @@ export function createTitleScreen(scene) {
 
   startButton.on("pointerdown", () => {
     scene.sound.play("boopSound");
-    // start level
+    startGame(scene);
+    titleScreen.destroy();
+    text1.destroy();
+    text2.destroy();
+    text3.destroy();
+    startButton.destroy();
   });
 
   return titleScreen;
+}
+
+export function handleShowBackground(scene) {
+  scene.background = scene.add.image(
+    config.centerWidth,
+    config.centerHeight,
+    "street1"
+  );
+  scene.background.setDisplaySize(config.width, config.height);
+
+  scene.add.text(20, 10, "Clutch Chaos", {
+    fontFamily: "coolFont",
+    fontSize: "50px",
+    color: "#A64D79",
+  });
+
+  scene.backgroundMusic = scene.sound.add("backgroundMusic", {
+    loop: true,
+    volume: 0.5,
+  });
+  scene.backgroundMusic.play();
+
+  scene.time.addEvent({
+    delay: 1000,
+    callback: changeBackground(scene),
+    callbackScope: scene,
+    loop: true,
+  });
+}
+
+function changeBackground(scene) {
+  const backgrounds = ["street1", "street2"];
+  const currentTexture = scene.background.texture.key;
+  let nextTexture;
+
+  // Find the next texture (cycle through)
+  let currentIndex = backgrounds.indexOf(currentTexture);
+  let nextIndex = (currentIndex + 1) % backgrounds.length;
+  nextTexture = backgrounds[nextIndex];
+
+  // Change the background texture
+  scene.background.setTexture(nextTexture);
 }

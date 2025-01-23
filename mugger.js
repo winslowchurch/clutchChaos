@@ -88,7 +88,7 @@ export function handleMuggerShoot(scene, mugger, bullets) {
 
   bullet.setVelocityX(-450);
   bullet.body.allowGravity = false;
-  scene.sound.play("gunshotSound");
+  scene.sound.play("gunshotSound", { volume: 0.4 });
 
   // Destroy bullet when it leaves the screen
   scene.time.addEvent({

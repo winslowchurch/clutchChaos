@@ -31,6 +31,14 @@ const failTextOptions = [
   "At least you tried",
 ];
 
+export function handleFailScenario(scene) {
+  scene.girl.mood = "dead";
+  scene.mugger.mood = "happy";
+  scene.backgroundMusic.stop();
+  scene.sound.play("bwapSound");
+  createFailscreen(scene);
+}
+
 export function createFailscreen(scene) {
   const failScreen = scene.add.image(
     config.centerWidth,

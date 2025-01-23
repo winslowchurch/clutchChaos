@@ -10,13 +10,12 @@ import {
   handleMuggerShoot,
 } from "./mugger.js";
 import { createGirl } from "./girl.js";
-import { createFailscreen } from "./screens.js";
+import { handleFailScenario } from "./screens.js";
 
 // BUGS
 // you can still win after chick dies
 
 // TO DO
-// instant kill if he touches girl
 // More sound effects
 // Hook in title screen
 
@@ -151,11 +150,7 @@ function create() {
   this.bullets = this.physics.add.group();
   this.physics.add.collider(this.bullets, this.girl, (girl, bullet) => {
     bullet.destroy();
-    girl.mood = "dead";
-    this.mugger.mood = "happy";
-    this.backgroundMusic.stop();
-    this.sound.play("bwapSound");
-    createFailscreen(this);
+    handleFailScenario(this);
   });
 
   this.time.addEvent({
@@ -170,7 +165,7 @@ function create() {
           });
         }
         // move forward
-        this.mugger.setVelocityX(-60);
+        this.mugger.setVelocityX(-70);
         this.time.delayedCall(500, () => {
           this.mugger.setVelocityX(0);
         });
@@ -183,6 +178,12 @@ function create() {
   // Purse destroys bullet
   this.physics.add.collider(this.bullets, this.player, (player, bullet) => {
     bullet.destroy();
+  });
+
+  // Mugger touching girl = insta kill
+  this.physics.add.collider(this.mugger, this.girl, (mugger, girl) => {
+    mugger.x += 50; // move him back
+    handleFailScenario(this);
   });
 
   this.keys = this.input.keyboard.addKeys({

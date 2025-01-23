@@ -49,13 +49,13 @@ export function handlePlayerAttack(scene, player, keys, time, projectiles) {
 
     switch (randomProjectile) {
       case "lipstick":
-        scene.sound.play("lipstickSound");
+        scene.sound.play("lipstickSound", { volume: 0.4 });
         break;
       case "wallet":
-        scene.sound.play("walletSound");
+        scene.sound.play("walletSound", { volume: 0.4 });
         break;
       case "coins":
-        scene.sound.play("coinsSound");
+        scene.sound.play("coinsSound", { volume: 0.4 });
         break;
     }
 

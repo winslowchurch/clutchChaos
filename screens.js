@@ -93,5 +93,21 @@ export function createTitleScreen(scene) {
   createCenteredText(scene, -50, "- Use arrow/WASD keys to move");
   createCenteredText(scene, 0, "- Hit spacebar to attack");
 
+  const startButton = createCenteredText(scene, 50, "Start", "40px");
+  startButton.setInteractive();
+
+  startButton.on("pointerover", () => {
+    startButton.setStyle({ fontSize: "50px" });
+  });
+
+  startButton.on("pointerout", () => {
+    startButton.setStyle({ fontSize: "40px" });
+  });
+
+  startButton.on("pointerdown", () => {
+    scene.sound.play("boopSound");
+    // start level
+  });
+
   return titleScreen;
 }

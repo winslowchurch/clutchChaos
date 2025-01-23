@@ -8,7 +8,7 @@ export function createPlayer(scene) {
   return player;
 }
 
-export function handlePlayerMovement(player, keys) {
+export function handlePlayerMovement(scene, player, keys) {
   // Horizontal movement
   if (keys.left.isDown || keys.arrowLeft.isDown) {
     player.setVelocityX(-160); // Move left
@@ -20,6 +20,7 @@ export function handlePlayerMovement(player, keys) {
 
   // Jumping
   if ((keys.up.isDown || keys.arrowUp.isDown) && player.body.touching.down) {
+    scene.sound.play("boingSound");
     player.setVelocityY(-350); // Jump only when touching the floor
   }
 }

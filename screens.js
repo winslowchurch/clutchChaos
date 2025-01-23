@@ -55,6 +55,7 @@ export function createFailscreen(scene) {
   });
 
   retryButton.on("pointerdown", () => {
+    scene.sound.play("boopSound");
     scene.scene.restart();
   });
 

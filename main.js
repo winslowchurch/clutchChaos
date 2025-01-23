@@ -77,6 +77,8 @@ function preload() {
   this.load.audio("successSound", "assets/success.mp3");
   this.load.audio("gunshotSound", "assets/gunshot.mp3");
   this.load.audio("bwapSound", "assets/bwap.mp3");
+  this.load.audio("boingSound", "assets/boing.mp3");
+  this.load.audio("boopSound", "assets/boop.wav");
 
   // Font
   this.load.css("fontStyle", "assets/styles.css");
@@ -195,7 +197,7 @@ function create() {
 }
 
 function update(time) {
-  handlePlayerMovement(this.player, this.keys);
+  handlePlayerMovement(this, this.player, this.keys);
   handlePlayerAttack(this, this.player, this.keys, time, this.projectiles);
 }
 

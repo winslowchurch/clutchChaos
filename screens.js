@@ -48,9 +48,9 @@ export function createNextLevelScreen(scene) {
     config.centerHeight,
     "successScreen"
   );
-  const congratsText = createCenteredText(scene, 0, "Nice job!", "100px");
+  const congratsText = createCenteredText(scene, -60, "Nice job!", "100px");
 
-  const nextButton = createCenteredText(scene, 50, "Next Level", "40px");
+  const nextButton = createCenteredText(scene, 70, "NEXT LEVEL", "60px");
   nextButton.setInteractive();
 
   nextButton.on("pointerover", () => {
@@ -135,28 +135,37 @@ export function createTitleScreen(scene) {
     "titleScreen"
   );
 
-  const text1 = createCenteredText(scene, -100, "How To Play:", "50px");
-  const text2 = createCenteredText(scene, -20, "- Use arrow/WASD keys to move");
-  const text3 = createCenteredText(scene, 20, "- Hit spacebar to attack");
+  const textData = [
+    { text: "Don't get mugged!", offset: -100, fontSize: "60px" },
+    { text: "- Use arrow/WASD keys to move", offset: -30 },
+    { text: "- Hit spacebar to attack", offset: 20 },
+    { text: "- Block bullets", offset: 70 },
+  ];
 
-  const startButton = createCenteredText(scene, 100, "Start", "40px");
+  // Create and store text objects
+  const textObjects = textData.map((data) =>
+    createCenteredText(scene, data.offset, data.text, data.fontSize || "35px")
+  );
+
+  const startButton = createCenteredText(scene, 130, "START", "50px");
   startButton.setInteractive();
 
   startButton.on("pointerover", () => {
-    startButton.setStyle({ fontSize: "50px" });
+    startButton.setStyle({ fontSize: "60px" });
   });
 
   startButton.on("pointerout", () => {
-    startButton.setStyle({ fontSize: "40px" });
+    startButton.setStyle({ fontSize: "50px" });
   });
 
   startButton.on("pointerdown", () => {
     scene.sound.play("boopSound");
     titleScreen.destroy();
-    text1.destroy();
-    text2.destroy();
-    text3.destroy();
+
+    // Destroy all text objects
+    textObjects.forEach((text) => text.destroy());
     startButton.destroy();
+
     startGame(scene, 0);
   });
 

@@ -18,7 +18,6 @@ import {
 
 // BUGS
 // you can still win after chick dies
-// fix try again screen
 
 // TO DO
 // More sound effects
@@ -110,7 +109,6 @@ function create() {
     delay: 1000,
     callback: () => {
       // alternate background
-      console.log(this.backgrounds, this.background);
       const currentTexture = this.background.texture.key;
       let currentIndex = this.backgrounds.indexOf(currentTexture);
       let nextIndex = (currentIndex + 1) % this.backgrounds.length;
@@ -163,7 +161,7 @@ export function startGame(scene) {
     scene.projectiles,
     scene.mugger,
     (mugger, projectile) => {
-      if (mugger.mood !== "dead") {
+      if (mugger.mood !== "dead" && scene.girl.mood !== "dead") {
         handleMuggerDamage(projectile, mugger, scene, 1);
       } else {
         projectile.destroy();

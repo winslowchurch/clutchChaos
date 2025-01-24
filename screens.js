@@ -60,7 +60,7 @@ export function createNextLevelScreen(scene) {
 
   const randomText =
     successTextOptions[Math.floor(Math.random() * successTextOptions.length)];
-  const congratsText = createCenteredText(scene, -60, randomText, "100px");
+  const congratsText = createCenteredText(scene, -60, randomText, "90px");
 
   const nextButton = createCenteredText(scene, 70, "NEXT LEVEL", "60px");
   nextButton.setInteractive();

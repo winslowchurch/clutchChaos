@@ -5,10 +5,17 @@ export const muggerLevelInfo = [
   {
     health: "10",
     gunSpeed: "-450",
+    chanceOfShooting: 0.4,
   },
   {
     health: "12",
     gunSpeed: "-500",
+    chanceOfShooting: 0.5,
+  },
+  {
+    health: "15",
+    gunSpeed: "-550",
+    chanceOfShooting: 0.6,
   },
 ];
 
@@ -21,7 +28,8 @@ export function createMugger(scene) {
   mugger.gunSpeed = muggerLevelInfo[scene.currentLevel].gunSpeed;
 
   // Alternate between two images for the mugger
-  const muggerImages = levels[scene.currentLevel].enemies;
+
+  const muggerImages = ["mugger1", "mugger2"];
   let currentIndex = 0;
 
   scene.time.addEvent({
@@ -64,7 +72,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
     handleLevelEnd(scene);
   } else {
     // Apply a small knockback force to the mugger
-    const knockbackForce = 100;
+    const knockbackForce = 150;
     const direction = projectile.x < mugger.x ? 1 : -1;
     mugger.setVelocityX(knockbackForce * direction); // Apply knockback in the direction
     scene.time.delayedCall(100, () => mugger.setVelocityX(0)); // Stop movement after a short delay

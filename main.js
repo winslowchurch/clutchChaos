@@ -9,6 +9,7 @@ import {
   updateHealthBar,
   handleMuggerShoot,
   playMuggerComplaint,
+  muggerLevelInfo,
 } from "./mugger.js";
 import { createGirl } from "./girl.js";
 import {
@@ -45,6 +46,8 @@ function preload() {
   this.load.image("street2", "images/street2.png");
   this.load.image("subway1", "images/subway1.png");
   this.load.image("subway2", "images/subway2.png");
+  this.load.image("alley1", "images/alley1.png");
+  this.load.image("alley2", "images/alley2.png");
 
   this.load.image("purse", "images/purse.png");
   this.load.image("purseAttack", "images/purseAttack.png");
@@ -89,11 +92,12 @@ function preload() {
 export const levels = [
   {
     backgrounds: ["street1", "street2"],
-    enemies: ["mugger1", "mugger2"],
+  },
+  {
+    backgrounds: ["alley1", "alley2"],
   },
   {
     backgrounds: ["subway1", "subway2"],
-    enemies: ["mugger1", "mugger2"],
   },
 ];
 
@@ -182,7 +186,9 @@ export function startGame(scene) {
     callback: () => {
       if (scene.mugger.mood == "pissed") {
         // 40% chance of shooting gun
-        if (Math.random() < 0.4) {
+        if (
+          Math.random() < muggerLevelInfo[scene.currentLevel].chanceOfShooting
+        ) {
           scene.mugger.mood = "shooty";
           scene.time.delayedCall(500, () => {
             handleMuggerShoot(scene, scene.mugger, scene.bullets);

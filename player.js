@@ -21,7 +21,7 @@ export function handlePlayerMovement(scene, player, keys) {
   // Jumping
   if ((keys.up.isDown || keys.arrowUp.isDown) && player.body.touching.down) {
     scene.sound.play("boingSound");
-    player.setVelocityY(-350); // Jump only when touching the floor
+    player.setVelocityY(-500); // Jump only when touching the floor
   }
 }
 

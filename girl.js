@@ -1,3 +1,7 @@
+import { showTextBubble } from "./mugger.js";
+
+const happyTextOptions = ["Yay!", "Phew!", "⭐️⭐️", "Yipee!", "Omg..."];
+
 export function createGirl(scene) {
   const girl = scene.physics.add.sprite(100, 400, "girl1");
   girl.setCollideWorldBounds(true);
@@ -28,6 +32,26 @@ export function createGirl(scene) {
   });
 
   return girl;
+}
+
+export function handleGirlCelebrating(scene) {
+  if (!scene.girl.talking) {
+    scene.girl.talking = true;
+    const { textBubble, bubbleText } = showTextBubble(
+      scene,
+      scene.girl.x,
+      scene.girl.y,
+      happyTextOptions
+    );
+    scene.time.addEvent({
+      delay: 3000,
+      callback: () => {
+        textBubble.destroy();
+        bubbleText.destroy();
+        scene.girl.talking = false;
+      },
+    });
+  }
 }
 
 export function resetGirl(scene) {

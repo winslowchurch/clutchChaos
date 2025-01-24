@@ -1,5 +1,5 @@
 import { handleLevelEnd } from "./screens.js";
-import { levels } from "./main.js";
+import { handleGirlCelebrating } from "./girl.js";
 
 export const muggerLevelInfo = [
   {
@@ -19,6 +19,18 @@ export const muggerLevelInfo = [
   },
 ];
 
+const complaintOptions = [
+  "WTF!",
+  "Hey!",
+  "Ow!",
+  "?!!",
+  "&@$%*!",
+  "Ouch!",
+  "TF?",
+  "🤬🤬",
+  ">:(",
+];
+
 export function createMugger(scene) {
   const mugger = scene.physics.add.sprite(800, 400, "mugger1");
   mugger.setCollideWorldBounds(true);
@@ -26,9 +38,9 @@ export function createMugger(scene) {
   mugger.health = muggerLevelInfo[scene.currentLevel].health;
   mugger.mood = "pissed";
   mugger.gunSpeed = muggerLevelInfo[scene.currentLevel].gunSpeed;
+  mugger.complaining = false;
 
   // Alternate between two images for the mugger
-
   const muggerImages = ["mugger1", "mugger2"];
   let currentIndex = 0;
 
@@ -69,12 +81,12 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
     scene.sound.play("successSound");
     mugger.mood = "dead";
     scene.girl.mood = "happy";
+    handleGirlCelebrating(scene);
     handleLevelEnd(scene);
   } else {
     // Apply a small knockback force to the mugger
     const knockbackForce = 150;
-    const direction = projectile.x < mugger.x ? 1 : -1;
-    mugger.setVelocityX(knockbackForce * direction); // Apply knockback in the direction
+    mugger.setVelocityX(knockbackForce);
     scene.time.delayedCall(100, () => mugger.setVelocityX(0)); // Stop movement after a short delay
 
     mugger.setTint(0xff0000);
@@ -125,11 +137,48 @@ export function handleMuggerShoot(scene, mugger, bullets) {
 }
 
 export function resetMugger(scene) {
-  scene.mugger.setPosition(800, 400);
+  scene.mugger.setPosition(800, 350);
   scene.mugger.mood = "pissed";
   scene.mugger.health = muggerLevelInfo[scene.currentLevel].health;
 }
 
 export function playMuggerComplaint(scene) {
   scene.sound.play("thwackSound");
+
+  if (Math.random() < 0.5 && !scene.mugger.complaining) {
+    scene.mugger.complaining = true;
+    const { textBubble, bubbleText } = showTextBubble(
+      scene,
+      scene.mugger.x,
+      scene.mugger.y,
+      complaintOptions
+    );
+    scene.time.addEvent({
+      delay: 3000,
+      callback: () => {
+        textBubble.destroy();
+        bubbleText.destroy();
+        scene.mugger.complaining = false;
+      },
+    });
+  }
+}
+
+export function showTextBubble(scene, x, y, textOptions) {
+  const textBubble = scene.add.image(x, y - 230, "textBubble");
+
+  const bubbleBounds = textBubble.getBounds();
+  const textX = bubbleBounds.centerX;
+  const textY = bubbleBounds.centerY - 10;
+
+  const randomText =
+    textOptions[Math.floor(Math.random() * textOptions.length)];
+  const bubbleText = scene.add.text(textX, textY, randomText, {
+    fontFamily: "coolFont",
+    fontSize: "45px",
+    color: "#000000",
+  });
+  bubbleText.setOrigin(0.5);
+
+  return { textBubble, bubbleText };
 }

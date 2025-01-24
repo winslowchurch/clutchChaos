@@ -32,15 +32,17 @@ const failTextOptions = [
   "That's embarassing for you",
   "You're not very good at this",
   "At least you tried",
+  "💀💀",
 ];
 
 const successTextOptions = [
   "Great job!",
   "You nailed it",
-  "Oh he DEAD dead...",
   "Sucess!",
   "Awesome!",
   "You killed him!",
+  "Gold star 4 u",
+  "🤩🤩",
 ];
 
 export function handleLevelEnd(scene) {
@@ -60,7 +62,7 @@ export function createNextLevelScreen(scene) {
 
   const randomText =
     successTextOptions[Math.floor(Math.random() * successTextOptions.length)];
-  const congratsText = createCenteredText(scene, -60, randomText, "90px");
+  const congratsText = createCenteredText(scene, -60, randomText, "70px");
 
   const nextButton = createCenteredText(scene, 70, "NEXT LEVEL", "60px");
   nextButton.setInteractive();

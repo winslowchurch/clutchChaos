@@ -66,6 +66,7 @@ function preload() {
   this.load.image("girl2", "images/girl2.png");
   this.load.image("girlHappy", "images/happyGirl.png");
   this.load.image("girlDead", "images/girlDead.png");
+  this.load.image("textBubble", "images/textBubble.png");
 
   // Screens
   this.load.image("failScreen", "images/failScreen.png");

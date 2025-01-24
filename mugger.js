@@ -1,14 +1,24 @@
 import { handleLevelEnd } from "./screens.js";
 import { levels } from "./main.js";
 
-export function createMugger(scene, maxHealth = 10) {
+export const muggerLevelInfo = [
+  {
+    health: "10",
+    gunSpeed: "-450",
+  },
+  {
+    health: "12",
+    gunSpeed: "-500",
+  },
+];
+
+export function createMugger(scene) {
   const mugger = scene.physics.add.sprite(800, 400, "mugger1");
   mugger.setCollideWorldBounds(true);
 
-  mugger.health = maxHealth;
-  mugger.maxHealth = maxHealth;
+  mugger.health = muggerLevelInfo[scene.currentLevel].health;
   mugger.mood = "pissed";
-  mugger.gunSpeed = -500;
+  mugger.gunSpeed = muggerLevelInfo[scene.currentLevel].gunSpeed;
 
   // Alternate between two images for the mugger
   const muggerImages = levels[scene.currentLevel].enemies;
@@ -81,7 +91,8 @@ export function updateHealthBar(scene, mugger) {
   scene.healthBar.fillRect(barX, barY, BAR_LENGTH, 20); // Rectangle for background
 
   // Calculate the width of the health bar based on mugger's health
-  const healthPercentage = mugger.health / mugger.maxHealth;
+  const healthPercentage =
+    mugger.health / muggerLevelInfo[scene.currentLevel].health;
   const healthWidth = BAR_LENGTH * healthPercentage; // Width based on health
 
   scene.healthBar.fillStyle(0xa64d79, 1); // pink color
@@ -108,5 +119,5 @@ export function handleMuggerShoot(scene, mugger, bullets) {
 export function resetMugger(scene) {
   scene.mugger.setPosition(800, 400);
   scene.mugger.mood = "pissed";
-  scene.mugger.health = scene.mugger.maxHealth;
+  scene.mugger.health = muggerLevelInfo[scene.currentLevel].health;
 }

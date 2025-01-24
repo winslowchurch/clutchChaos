@@ -34,6 +34,15 @@ const failTextOptions = [
   "At least you tried",
 ];
 
+const successTextOptions = [
+  "Great job!",
+  "You nailed it",
+  "Oh he DEAD dead...",
+  "Sucess!",
+  "Awesome!",
+  "You killed him!",
+];
+
 export function handleLevelEnd(scene) {
   if (scene.currentLevel < levels.length - 1) {
     createNextLevelScreen(scene);
@@ -48,7 +57,10 @@ export function createNextLevelScreen(scene) {
     config.centerHeight,
     "successScreen"
   );
-  const congratsText = createCenteredText(scene, -60, "Nice job!", "100px");
+
+  const randomText =
+    successTextOptions[Math.floor(Math.random() * successTextOptions.length)];
+  const congratsText = createCenteredText(scene, -60, randomText, "100px");
 
   const nextButton = createCenteredText(scene, 70, "NEXT LEVEL", "60px");
   nextButton.setInteractive();

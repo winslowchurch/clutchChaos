@@ -8,6 +8,7 @@ import {
   handleMuggerDamage,
   updateHealthBar,
   handleMuggerShoot,
+  playMuggerComplaint,
 } from "./mugger.js";
 import { createGirl } from "./girl.js";
 import {
@@ -15,9 +16,6 @@ import {
   createTitleScreen,
   createBackground,
 } from "./screens.js";
-
-// TO DO
-// More sound effects
 
 export const config = {
   type: Phaser.AUTO,
@@ -82,6 +80,7 @@ function preload() {
   this.load.audio("boingSound", "assets/boing.mp3");
   this.load.audio("boopSound", "assets/boop.wav");
   this.load.audio("popSound", "assets/pop.mp3");
+  this.load.audio("thwackSound", "assets/thwack.mp3");
 
   // Font
   this.load.css("fontStyle", "assets/styles.css");
@@ -162,9 +161,9 @@ export function startGame(scene) {
     (mugger, projectile) => {
       if (mugger.mood !== "dead" && scene.girl.mood !== "dead") {
         handleMuggerDamage(projectile, mugger, scene, 1);
-      } else {
-        projectile.destroy();
+        playMuggerComplaint(scene);
       }
+      projectile.destroy();
     }
   );
 

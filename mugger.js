@@ -121,3 +121,7 @@ export function resetMugger(scene) {
   scene.mugger.mood = "pissed";
   scene.mugger.health = muggerLevelInfo[scene.currentLevel].health;
 }
+
+export function playMuggerComplaint(scene) {
+  scene.sound.play("thwackSound");
+}

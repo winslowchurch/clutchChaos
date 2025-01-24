@@ -140,6 +140,7 @@ export function resetMugger(scene) {
   scene.mugger.setPosition(800, 350);
   scene.mugger.mood = "pissed";
   scene.mugger.health = muggerLevelInfo[scene.currentLevel].health;
+  updateHealthBar(scene, scene.mugger);
 }
 
 export function playMuggerComplaint(scene) {

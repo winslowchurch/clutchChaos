@@ -186,7 +186,7 @@ export function startGame(scene) {
     delay: 2000,
     callback: () => {
       if (scene.mugger.mood == "pissed") {
-        // 40% chance of shooting gun
+        // chance of shooting gun
         if (
           Math.random() < muggerLevelInfo[scene.currentLevel].chanceOfShooting
         ) {

@@ -1,4 +1,4 @@
-import { handleLevelEnd } from "./screens.js";
+import { handleLevelEnd, createFailscreen } from "./screens.js";
 import { handleGirlCelebrating } from "./girl.js";
 
 export const muggerLevelInfo = [
@@ -81,9 +81,9 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
   }
 
   if (mugger.health <= 0) {
-    scene.sound.play("successSound");
     mugger.mood = "dead";
     scene.girl.mood = "happy";
+    scene.sound.play("successSound");
     handleGirlCelebrating(scene);
     handleLevelEnd(scene);
   } else {

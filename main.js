@@ -5,18 +5,19 @@ import {
 } from "./player.js";
 import {
   createMugger,
-  handleMuggerDamage,
   updateHealthBar,
   handleMuggerShoot,
-  playMuggerComplaint,
   muggerLevelInfo,
 } from "./mugger.js";
 import { createGirl } from "./girl.js";
+import { createTitleScreen, createBackground } from "./screens.js";
 import {
-  handleFailScenario,
-  createTitleScreen,
-  createBackground,
-} from "./screens.js";
+  handleFloorCollissions,
+  handleProjectilesMuggerCollission,
+  handleBulletGirlCollission,
+  handleMuggerGirlCollission,
+  handlePurseBulletCollission,
+} from "./collissions.js";
 
 export const config = {
   type: Phaser.AUTO,
@@ -147,40 +148,17 @@ export function startGame(scene) {
   scene.floor.setAlpha(0);
   scene.physics.add.existing(scene.floor, true);
 
+  scene.girl = createGirl(scene);
   scene.player = createPlayer(scene);
   scene.mugger = createMugger(scene);
   scene.healthBar = scene.add.graphics();
   updateHealthBar(scene, scene.mugger);
-  scene.girl = createGirl(scene);
 
-  // Player, Mugger, Purse collide with floor
-  scene.physics.add.collider(scene.player, scene.floor);
-  scene.physics.add.collider(scene.mugger, scene.floor);
-  scene.physics.add.collider(scene.girl, scene.floor);
-
-  // Mugger projectiles collision
-  scene.projectiles = scene.physics.add.group();
-  scene.physics.add.collider(
-    scene.projectiles,
-    scene.mugger,
-    (mugger, projectile) => {
-      if (mugger.mood !== "dead" && scene.girl.mood !== "dead") {
-        handleMuggerDamage(projectile, mugger, scene, 1);
-        playMuggerComplaint(scene);
-      }
-      projectile.destroy();
-    }
-  );
-
-  // Bullet girl collission
-  scene.bullets = scene.physics.add.group();
-  scene.physics.add.collider(scene.bullets, scene.girl, (girl, bullet) => {
-    if (scene.mugger.mood !== "dead") {
-      bullet.destroy();
-      scene.backgroundMusic.stop();
-      handleFailScenario(scene);
-    }
-  });
+  handleFloorCollissions(scene);
+  handleProjectilesMuggerCollission(scene);
+  handleBulletGirlCollission(scene);
+  handleMuggerGirlCollission(scene);
+  handlePurseBulletCollission(scene);
 
   scene.time.addEvent({
     delay: 2000,
@@ -205,17 +183,6 @@ export function startGame(scene) {
     },
     callbackScope: scene,
     loop: scene,
-  });
-
-  // Purse destroys bullet
-  scene.physics.add.collider(scene.bullets, scene.player, (player, bullet) => {
-    bullet.destroy();
-  });
-
-  // Mugger touching girl = insta kill
-  scene.physics.add.collider(scene.mugger, scene.girl, (mugger, girl) => {
-    mugger.x += 50; // move him back
-    handleFailScenario(scene);
   });
 
   scene.keys = scene.input.keyboard.addKeys({

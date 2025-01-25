@@ -170,7 +170,7 @@ export function startGame(scene) {
         ) {
           scene.mugger.mood = "shooty";
           scene.time.delayedCall(500, () => {
-            handleMuggerShoot(scene, scene.mugger, scene.bullets);
+            handleMuggerShoot(scene, scene.mugger);
           });
         }
         // always move forward

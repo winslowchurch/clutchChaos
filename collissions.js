@@ -8,8 +8,8 @@ export function handleFloorCollissions(scene) {
   scene.physics.add.collider(scene.girl, scene.floor);
 }
 
+// Mugger projectiles collision
 export function handleProjectilesMuggerCollission(scene) {
-  // Mugger projectiles collision
   scene.projectiles = scene.physics.add.group();
   scene.physics.add.collider(
     scene.projectiles,
@@ -24,15 +24,13 @@ export function handleProjectilesMuggerCollission(scene) {
   );
 }
 
+// Bullet girl collission
 export function handleBulletGirlCollission(scene) {
-  // Bullet girl collission
   scene.bullets = scene.physics.add.group();
   scene.physics.add.collider(scene.bullets, scene.girl, (girl, bullet) => {
-    if (scene.mugger.mood !== "dead") {
-      bullet.destroy();
-      scene.backgroundMusic.stop();
-      handleFailScenario(scene);
-    }
+    bullet.destroy();
+    scene.backgroundMusic.stop();
+    handleFailScenario(scene);
   });
 }
 

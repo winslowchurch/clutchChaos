@@ -83,9 +83,34 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
   if (mugger.health <= 0) {
     mugger.mood = "dead";
     scene.girl.mood = "happy";
-    scene.sound.play("successSound");
-    handleGirlCelebrating(scene);
-    handleLevelEnd(scene);
+
+    // if no bullets, yay!
+    if (scene.bullets.getChildren().length == 0) {
+      scene.sound.play("successSound");
+      handleGirlCelebrating(scene);
+      handleLevelEnd(scene);
+      return;
+    }
+
+    const checkForBullets = scene.time.addEvent({
+      delay: 100, // Check every 100ms
+      callback: () => {
+        const activeBullets = scene.bullets.getChildren();
+
+        if (scene.girl.mood === "dead") {
+          // Fail scenario if girl is hit
+          scene.time.removeEvent(checkForBullets); // Stop the loop
+          return;
+        } else if (activeBullets.length === 0) {
+          // No bullets left, proceed to success
+          scene.time.removeEvent(checkForBullets); // Stop the loop
+          scene.sound.play("successSound");
+          handleGirlCelebrating(scene);
+          handleLevelEnd(scene);
+        }
+      },
+      loop: true,
+    });
   } else {
     // Apply a small knockback force to the mugger
     const knockbackForce = 150;
@@ -122,8 +147,8 @@ export function updateHealthBar(scene, mugger) {
   scene.healthBar.fillRect(barX, barY, healthWidth, 20); // Rectangle for health
 }
 
-export function handleMuggerShoot(scene, mugger, bullets) {
-  const bullet = bullets.create(mugger.x - 50, mugger.y - 50, "bullet");
+export function handleMuggerShoot(scene, mugger) {
+  const bullet = scene.bullets.create(mugger.x - 50, mugger.y - 50, "bullet");
 
   bullet.setVelocityX(mugger.gunSpeed);
   bullet.body.allowGravity = false;

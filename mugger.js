@@ -3,19 +3,22 @@ import { handleGirlCelebrating } from "./girl.js";
 
 export const muggerLevelInfo = [
   {
-    health: "10",
-    gunSpeed: "-450",
-    chanceOfShooting: 0.4,
+    health: "8",
+    gunSpeed: "-400",
+    chanceOfShooting: 0.2,
+    stepLength: -40,
   },
   {
     health: "12",
     gunSpeed: "-500",
-    chanceOfShooting: 0.5,
+    chanceOfShooting: 0.4,
+    stepLength: -80,
   },
   {
     health: "15",
-    gunSpeed: "-550",
+    gunSpeed: "-600",
     chanceOfShooting: 0.6,
+    stepLength: -130,
   },
 ];
 

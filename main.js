@@ -195,8 +195,9 @@ export function startGame(scene) {
             handleMuggerShoot(scene, scene.mugger, scene.bullets);
           });
         }
-        // move forward
-        scene.mugger.setVelocityX(-70);
+        // always move forward
+        const stepLength = muggerLevelInfo[scene.currentLevel].stepLength;
+        scene.mugger.setVelocityX(stepLength);
         scene.time.delayedCall(500, () => {
           scene.mugger.setVelocityX(0);
         });

@@ -138,7 +138,29 @@ export function createSuccessScreen(scene) {
     "successScreen"
   );
 
-  createCenteredText(scene, 0, "You win!", "100px");
+  const youWonText = createCenteredText(scene, -50, "You win!", "80px");
+
+  const restartButton = createCenteredText(scene, 50, "RESTART", "50px");
+  restartButton.setInteractive();
+
+  restartButton.on("pointerover", () => {
+    restartButton.setStyle({ fontSize: "60px" });
+  });
+
+  restartButton.on("pointerout", () => {
+    restartButton.setStyle({ fontSize: "50px" });
+  });
+
+  restartButton.on("pointerdown", () => {
+    scene.sound.play("boopSound");
+    successScreen.destroy();
+    restartButton.destroy();
+    youWonText.destroy();
+
+    scene.currentLevel = 0;
+    resetLevel();
+  });
+
   return successScreen;
 }
 

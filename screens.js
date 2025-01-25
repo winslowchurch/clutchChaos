@@ -232,8 +232,6 @@ function resetBackground(scene) {
 }
 
 function resetLevel(scene) {
-  console.log(scene.currentLevel);
-
   resetMugger(scene);
   resetPlayer(scene);
   resetGirl(scene);

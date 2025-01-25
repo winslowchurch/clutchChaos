@@ -11,9 +11,9 @@ export function createPlayer(scene) {
 export function handlePlayerMovement(scene, player, keys) {
   // Horizontal movement
   if (keys.left.isDown || keys.arrowLeft.isDown) {
-    player.setVelocityX(-160); // Move left
+    player.setVelocityX(-170); // Move left
   } else if (keys.right.isDown || keys.arrowRight.isDown) {
-    player.setVelocityX(160); // Move right
+    player.setVelocityX(170); // Move right
   } else {
     player.setVelocityX(0); // Stop horizontal movement
   }

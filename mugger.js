@@ -89,6 +89,7 @@ export function handleMuggerDamage(projectile, mugger, scene, damage) {
       scene.sound.play("successSound");
       handleGirlCelebrating(scene);
       handleLevelEnd(scene);
+      updateHealthBar(scene, mugger);
       return;
     }
 
